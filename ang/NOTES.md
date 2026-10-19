@@ -97,13 +97,47 @@ a convex combination of two representations (the λ-interval argument).
 Raising multiplicities preserves hole-freeness. If `R = Z ∩ ℤ^d` and `m_w ≥ 1`,
 then `R + {0,w}` equals `(Z + [0,w]) ∩ ℤ^d`.
 
-### Consequence (conditional)
+### Consequence (conditional), and why it cannot finish the proof
 
-If the set of products of *distinct* `p`-free integers in `[2,N]` is hole-free
-in exponent space (**HF_int(N,p)**), then by §2–§3 every column system over the
-`p`-free numbers `≤ N`, with arbitrary heights, has interval fibres. In
-particular Ang's conjecture holds for that `N`. HF_int is verified for small
-`N` (see below). Its proof is the open step.
+If the set of products of *distinct* `p`-free integers in `[2,N]` were hole-free
+in exponent space (**HF_int(N,p)**), §2–§3 would give interval fibres `V(R)`
+for every column system over the `p`-free numbers `≤ N`. That would hold even
+without the powers of `p`.
+
+**This fails for large `N`.** HF_int(N,p) holds for `N ≤ 60` (`p = 2`) and
+`N ≤ 50` (`p = 3`). But the `{3,5,7}`-smooth slice already has holes at
+`N = 2000` (`experiments/smooth3.cpp`). That slice embeds exactly into the full
+system: a product with `{3,5,7}`-smooth `p`-free part can only use smooth
+elements. Moreover:
+
+* **The powers of `p` are genuinely needed.** For `n = 2000`, `p = 2` there is
+  an odd `R` (`{3,5,7}`-smooth) for which `V(R)`, the set of 2-adic valuations
+  of products of subsets of `[2000] ∖ {1,2,4,…,1024}` with odd part `R`, has a
+  gap of size 3 (`experiments/smoothang16.cpp`). The powers of 2 provide slack
+  `T = 55`, so Ang's property itself still holds there. In the same slice,
+  `n = 1000` and `n = 5000` have no gaps at all.
+* Degenerate reachability configurations (failures of R1) do occur at raise
+  steps in that slice at `N = 2000` (`experiments/smoothff.cpp`).
+
+So any proof of the full conjecture must use the slack `T` from the powers of
+`p` in an essential way.
+
+### 4. A reduction that does use the slack `T`
+
+A *quadratic move* replaces at most two factors of a factorization `c` of `R`
+by at most two factors with the same product (within the capacities
+`c_r ≤ J_r + 1`). Such a move changes `L(c)` by at most `2·J₁`, where
+`J₁ = ⌊log_p n⌋`. Since `(J₁−1)(J₁−2) ≥ 0`, we have `2·J₁ ≤ T + 1`. Hence the
+intervals `[L, H+T]` of two configurations related by a quadratic move overlap
+or touch.
+
+**Consequence.** If, for every `R`, each component of the factorizations of `R`
+under quadratic moves meets every other component's interval range, then Ang's
+conjecture holds. Two sufficient conditions are that quadratic moves connect all
+factorizations, or that every component contains an `L`-minimiser.
+For `p > √n` (`J₁ = 1`, `T = 1`) the relevant quantity is just the number `d`
+of `r ≤ n/p` used twice. Quadratic moves change `d` by at most 2, and `V(R)` is
+an interval as soon as `{d(c)}` has gaps of at most 2.
 
 ## Counterexamples to generalisations (all verified exactly)
 
@@ -136,5 +170,10 @@ particular Ang's conjecture holds for that `N`. HF_int is verified for small
   no configuration violating R1–R3 occurs at any raise. Checked for `N ≤ 34`,
   `p ∈ {2,3,5}`, and `N ≤ 30`, `p = 7` (`experiments/flatfirst.cpp`). This
   verifies the reduction's hypothesis in that range.
-* HF_int(N,p) holds (adjacent-candidate exact facet test) for `N ≤ 30`,
-  `p ∈ {2,3,5}` (`experiments/inthf.cpp`).
+* HF_int(N,p) holds (adjacent-candidate exact facet test) for `N ≤ 60`
+  (`p = 2`), `N ≤ 50` (`p = 3`), `N ≤ 40` (`p = 5`) (`experiments/inthf.cpp`).
+  It fails from `N = 2000` (`p = 2`) via the `{3,5,7}`-smooth slice.
+* Smooth slices make large `n` testable: Ang's property holds on the
+  `{3,5,7}`-smooth slice for `p = 2`, `n ∈ {1000, 2000, 5000}`, and on
+  `{2,3,5,7}`-smooth slices for `p ∈ {31, 53, 97}` and `n` up to `5p`
+  (`experiments/smoothang16.cpp`).
