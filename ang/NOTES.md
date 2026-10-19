@@ -46,6 +46,11 @@ Let `I = {(a,t) : 0 ≤ a ≤ K, 0 ≤ t < h_a}`. For every `A`, the set
 * `TwoPrimes.ang_two_primes` (`OpenProblem/TwoPrimes.lean`): if `m` and `p^e·m` are
   products of subsets of `TwoPrimes.smooth p q n = {x ≤ n : x = q^a·p^t}`, then so is
   `p^k·m` for every `k ≤ e`.
+* `AngCorollary.conjecture_of_prime_power_part` (`OpenProblem/AngCorollary.lean`): the
+  exact statement of `OeisA60957.conjecture` (same `productsOfSubsets` definition), under
+  the extra hypothesis `m = q^A·p^t` for a prime `q ≠ p`. In words, Ang's conjecture
+  holds whenever the `p`-free part of `m` is a prime power, including `1`. Proof: every
+  subset with product `m` or `p^a·m` consists of `{p,q}`-smooth numbers.
 
 *Proof.* Induction on `Σ h_a`, raising one column at a time from the base
 `h ≡ 1`. Invariant `INV(h)`:
