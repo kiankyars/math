@@ -39,6 +39,14 @@ Let `I = {(a,t) : 0 ≤ a ≤ K, 0 ≤ t < h_a}`. For every `A`, the set
 *Corollary.* For primes `p ≠ q` and any `n`, the products of subsets of the
 `{p,q}`-smooth numbers `≤ n` satisfy Ang's property for `p` (and for `q`).
 
+**Formalised in Lean 4 / Mathlib** (no `sorry`; axioms `propext`, `Classical.choice`,
+`Quot.sound` only):
+
+* `Skyline.reach_interval` (`OpenProblem/Skyline.lean`): the skyline theorem.
+* `TwoPrimes.ang_two_primes` (`OpenProblem/TwoPrimes.lean`): if `m` and `p^e·m` are
+  products of subsets of `TwoPrimes.smooth p q n = {x ≤ n : x = q^a·p^t}`, then so is
+  `p^k·m` for every `k ≤ e`.
+
 *Proof.* Induction on `Σ h_a`, raising one column at a time from the base
 `h ≡ 1`. Invariant `INV(h)`:
 
