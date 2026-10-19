@@ -146,10 +146,11 @@ an interval as soon as `{d(c)}` has gaps of at most 2.
 
 ## Counterexamples to generalisations (all verified exactly)
 
-* **Arbitrary heights, `d = 3`.** A down-set `D ⊂ ℕ³` with 23 columns gives a
-  gap after raising column `(1,1,1)` to height 2 (`experiments/r1mono.py`). The
-  fibre at `u = (6,18,8)` becomes `{…}` with a gap. So the column theorem needs
-  monotone heights in general.
+* **Arbitrary heights, `d = 3`.** Take the monotone system of 23 columns in
+  `experiments/r1mono.py`, whose fibres are all intervals. Raise column `(1,1,1)`
+  from height 0 to height 2, leaving its neighbours at height 0. Then the fibres
+  at `u = (6,18,8)` and `u = (36,7,26)` are no longer intervals. So the column
+  theorem needs monotone heights in general.
 * **Convex down-sets with arbitrary heights.** For `5Δ₃ = {x+y+z ≤ 5}`, R1
   fails, which yields a gap after raising one column to height 2. Subset sums of
   `5Δ₃∖{0}` and of `6Δ₃∖{0}` have 12 holes each (`experiments/simplex6.cpp`).
@@ -164,21 +165,28 @@ an interval as soon as `{d(c)}` has gaps of at most 2.
 * The conjecture holds for all `n ≤ 40` and all `p` (exhaustive,
   `experiments/a60957.cpp`). It also holds for random `R` with
   `n = 50, 70, 90, 120` (`experiments/angrand.py`).
-* **Stronger, without powers of `p`:** for `n ≤ 40` and `p ≤ 7`, `V(R)` itself
-  is an interval (`experiments/vgap.cpp`).
+* For `n ≤ 40` and `p ≤ 7`, even `V(R)` (no powers of `p`) is an interval
+  (`experiments/vgap.cpp`). This strengthening fails at `n = 2000` (see above).
 * **Down-set theorem:** for random finite down-sets `I ⊂ ℕ^k` (`k ≤ 6`, up to
   90 points), subset sums are convex along every axis
   (`experiments/dsc.cpp`, `dsbig.cpp`). Every 2-D axis slice is a convex
   polyomino (`experiments/polyo.cpp`).
 * **Flat-first order for integers:** start with all `p`-free `r ≤ N` at height
   0, then add `p^j r` (`j ≥ 1`) in increasing order. KL holds at every stage and
-  no configuration violating R1–R3 occurs at any raise. Checked for `N ≤ 34`,
-  `p ∈ {2,3,5}`, and `N ≤ 30`, `p = 7` (`experiments/flatfirst.cpp`). This
-  verifies the reduction's hypothesis in that range.
+  no configuration violating R1–R3 occurs at any raise. Checked for `N ≤ 34`
+  with `p ∈ {2,3,5}`, `N ≤ 40` with `p = 7`, and `N = 40` with `p = 11`
+  (`experiments/flatfirst.cpp`). So §2 proves the conjecture for those `(N,p)`.
+  The property fails at `N = 2000` (`p = 2`), where R1 violations appear in the
+  `{3,5,7}`-smooth slice.
 * HF_int(N,p) holds (adjacent-candidate exact facet test) for `N ≤ 60`
   (`p = 2`), `N ≤ 50` (`p = 3`), `N ≤ 40` (`p = 5`) (`experiments/inthf.cpp`).
   It fails from `N = 2000` (`p = 2`) via the `{3,5,7}`-smooth slice.
 * Smooth slices make large `n` testable: Ang's property holds on the
-  `{3,5,7}`-smooth slice for `p = 2`, `n ∈ {1000, 2000, 5000}`, and on
-  `{2,3,5,7}`-smooth slices for `p ∈ {31, 53, 97}` and `n` up to `5p`
-  (`experiments/smoothang16.cpp`).
+  `{3,5,7}`-smooth slice for `p = 2`, `n ∈ {1000, 2000, 5000}`. It also holds on
+  `{2,3,5,7}`-smooth slices for `p ∈ {31, 53}` with `n ∈ {2p, 5p}`, and for
+  `p = 97` with `n = 2p` (`experiments/smoothang16.cpp`).
+* Pair-move components (quadratic moves): for `N = 26`, `p ∈ {11,13}`, some
+  factorization sets are disconnected, but every component contains an
+  `L`-minimiser. For `p = 2`, `N ≤ 24`, they are connected
+  (`experiments/pmcmin.cpp`). For `p > √N`, local minima of `d` under quadratic
+  moves need not be global (`experiments/dlocal.cpp`).
