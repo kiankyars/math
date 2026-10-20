@@ -105,5 +105,15 @@ For the incidence graph of a balanced 3-SAT formula (3 literals per clause, each
 
 These were tested with standard invariant readings (`test1.cpp`, `big.cpp`): 84, 161, 165, 174,
 179, 199, 247, 255, 256, 281, 300, 384b, 387, 392b, 392c, 394, 422a, 422b, 422c, 426 and 434e.
-None failed on any connected graph with at most 9 vertices, nor on about 143,000 random graphs
-with 10–15 vertices.
+None failed on about 143,000 random graphs with 10–15 vertices. All but 161, 165, 255, 256, 281,
+300 and 434e were also checked on every connected graph with at most 10 vertices (11,716,571
+graphs at `n = 10`); those seven were checked exhaustively up to 9 vertices.
+
+- WOWII 174 (`L_s + b ≥ n + max λ - 1`, Conjecture 3 of DeLaViña–Waller 2008) and
+  WOWII 177 (`L_s + b ≥ 2α + σ`, where `σ` is the second-smallest degree) hold for all connected
+  graphs up to 9 vertices. Both have many equality cases, such as `C5` with pendants at one
+  vertex. A targeted search of 20,000 spiders with mixed-parity legs plus vertices closing
+  5-cycles found no counterexample to 174.
+- The Hamiltonian-path conditions 189, 190 and 213 hold for all connected graphs up to 9
+  vertices. For 189 this uses `dist_even(v)` counting `v` itself; the other reading already fails
+  on `K_{1,3}`.
