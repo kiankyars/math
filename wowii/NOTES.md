@@ -4,13 +4,14 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
   426, 434b, 434c and 449.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 393d, 394, 402, 422b, 442, 444, 382b and 401b. The last two fail on
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 393d, 394, 402, 422b, 425d, 442, 444, 382b and
+  401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -625,6 +626,26 @@ extend it to a maximal independent set `I` of `G`, which is independent dominati
 
 **Formalization.** `WOWII426.conjecture426` in `OpenProblem/WOWII426.lean`, via
 `indepDomNum_add_domNum_le`, depends only on the standard axioms.
+
+## WOWII 425d: false
+
+> Let `G` be a connected graph on `n > 3` vertices and `P` its set of pendants. Then
+> `i(G) ≤ |T_min(G)| + Σ_v K_4(v) + γ(G[V − N(P)])`.
+
+`T_min` is the set of vertices in the fewest triangles. WOWII lists this conjecture as open
+(December 2010).
+
+**Counterexample.** The graph has 12 vertices and 26 edges and was found by simulated annealing
+(`experiments/sa6.cpp`, verified by `experiments/v425.py`). It has no pendants and no `K_4`, and
+`{0, 7}` dominates it. Only vertex `2` lies in no triangle. So the bound is `1 + 0 + 2 = 3`.
+A `decide` check over all triples shows that no independent set of at most three vertices
+dominates, so `i(G) = 4`. Because there is no `K_4`, the result does not depend on how "sum of
+`K_4(v)`" is read.
+
+**Formalization.** `WOWII425d.not_conjecture425d` in `OpenProblem/WOWII425d.lean` depends only on
+the standard axioms. In the same batch, 418b (with `p(G)` the path cover number) and 418c hold for
+all connected graphs up to 9 vertices, and annealing found nothing for them
+(`experiments/t418.cpp`).
 
 ## WOWII 169: proved
 
