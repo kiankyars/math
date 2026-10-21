@@ -3,7 +3,7 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 321, 323, 325, 326, 348,
-  372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449.
+  361, 372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449.
 - **Refuted:** WOWII 255, 256, 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402,
   422b, 425d, 425e, 427, 439, 442 and 444. (427 leaves `C` undefined; one tree refutes both
   readings, `C` the centre and `C = M`.)
@@ -16,7 +16,7 @@ Status, all verified in Lean:
     when `|M|` is read as the number of pendants (the set `P` that the statement defines).
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII255.lean`, `WOWII256.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII391.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII412f.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII427.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII361.lean`, `WOWII382b.lean`, `WOWII391.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII412f.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII427.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -1412,6 +1412,38 @@ also held for all trees up to 16 vertices, but we have not proved them.
 **Formalization.** `OpenProblem/WOWII380.lean` contains `conjecture380`, `conjecture380_rad` and
 `conjecture241`, together with the reusable `center_adj` and `nonleaves_le_of_near`. All depend
 only on the standard axioms.
+
+## WOWII 361: proved
+
+> If `T` is a tree on `n > 2` vertices, then `γ_t(T) ≥ number of isolates of <S(T)> + |C|`, where
+> `S(T)` is the set of support vertices of `T` and `C` is the center of `T`.
+
+Let `D` be a minimum total dominating set. A leaf is dominated only by its neighbour, so `D`
+contains `S = S(T)`. A tree has at most two centers, and two centers are adjacent.
+
+- If two support vertices are adjacent, neither is an isolate of `<S>`. Then
+  `|D| ≥ |S| ≥ #isolates + 2 ≥ #isolates + |C|`.
+- Otherwise `S` is independent and every vertex of `S` is an isolate. Each support vertex needs a
+  neighbour in `D - S`, so `|D| ≥ |S| + 1`. It remains to rule out `D = S ∪ {t}` when `T` has two
+  centers.
+  - Every support vertex is adjacent to `t`, and every vertex is adjacent to `t` or to a support
+    vertex. So `ecc(t) ≤ 2`.
+  - Two adjacent centers of eccentricity at most 1 would form a triangle with any third vertex.
+    So the radius is 2, and `t` is a center.
+  - A neighbour of `t` outside `S` has a second neighbour, which closes a triangle or a 4-cycle.
+    So every neighbour of `t` lies in `S`, including the other center `c`.
+  - If `t` had a second neighbour `u`, the leaf at `u` would be at distance 3 from `c`. So `t` is
+    a leaf at `c`, and then every vertex is within distance 1 of `c`, a contradiction.
+
+The bound is tight, for example on stars and on spiders with legs of length 2. All trees up to
+18 vertices were checked first (`experiments/t361.cpp`, which also checks 376).
+
+Tracker: PR google-deepmind/formal-conjectures#7377 (October 15, 2026) adds the statement with
+`sorry`, including a variant for `n > 1`. Our theorem covers that variant too. No proof appears
+on the tracker.
+
+**Formalization.** `WOWII361.conjecture361` in `OpenProblem/WOWII361.lean` covers all trees with
+at least two vertices. It depends only on the standard axioms.
 
 ## WOWII 372: proved
 
