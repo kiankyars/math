@@ -2,7 +2,8 @@
 
 Status: **WOWII Conjectures 178, 348, 372 and 377 are proved and verified in Lean**
 (`OpenProblem/WOWII178.lean`, `OpenProblem/WOWII348.lean`, `OpenProblem/WOWII372.lean`,
-`OpenProblem/WOWII377.lean`).
+`OpenProblem/WOWII377.lean`). **WOWII Conjecture 378 is refuted in Lean**
+(`OpenProblem/WOWII378.lean`).
 The other conjectures below are still open. For them we record evidence and partial results only.
 
 Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the JSON
@@ -117,6 +118,46 @@ proof was found (`experiments/trees_battery.cpp`).
 depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. The upper median is
 defined literally, as the entry at index `⌊n/2⌋` of `Multiset.sort` applied to the degree
 multiset.
+
+## WOWII 378: false
+
+> If `T` is a tree on `n > 2` vertices, then
+> `γ_t(T) ≥ number of components of <M> + dist_avg(D_2(T))`.
+
+Here `M` is the set of maximum-degree vertices and `D_2(T)` the set of degree-2 vertices.
+WOWII does not define `dist_avg(S)` for a set `S`, and different sources read it differently, so
+we refute the conjecture under four readings:
+
+| Reading of `dist_avg(S)` | Counterexample | `γ_t` | components of `<M>` | `dist_avg(D_2)` |
+| --- | --- | --- | --- | --- |
+| mean over ordered pairs of distinct vertices of `S` | `T9` | 4 | 2 | 8/3 |
+| mean of `d(v, S)` over all `v` | `T5` | 2 | 1 | 6/5 |
+| mean of `d(v, S)` over `v ∉ S` (the tracker's reading for 363) | `T5` | 2 | 1 | 3/2 |
+| mean of `d(s, v)` over `s ∈ S`, `v ≠ s` | `T5` | 2 | 1 | 3/2 |
+
+The two counterexamples:
+
+- `T9` is the path `5-0-7-2-8-1-6` with an extra leaf at `7` and at `8`. It is the smallest
+  counterexample for the pairs reading.
+- `T5` is the spider with legs of lengths 1, 1 and 2.
+
+No tree with at most 15 vertices fails all four readings at once.
+
+The neighbouring conjectures 356 and 374 also fail on trees with 3 or 4 vertices under the pairs
+reading, which suggests that this batch of conjectures was generated from a database without
+those trees.
+
+**Formalization.** `OpenProblem/WOWII378.lean` proves `¬ Conjecture378 avg` for each of the four
+readings: `distAvgPairs`, `distAvgToSet`, `distAvgToSetPos` and `distAvgFrom`. Each proof checks
+the following facts about a concrete tree:
+
+- that it is a tree;
+- its degrees;
+- a total dominating set;
+- two separate components of `<M>`;
+- lower bounds on distances.
+
+All four theorems depend only on the standard axioms.
 
 ## WOWII 372: proved
 
