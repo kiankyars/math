@@ -4,14 +4,14 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
   426, 434b, 434c and 449.
-- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 442,
-  444, 382b and 401b. The last two fail on
+- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 439,
+  442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -705,9 +705,35 @@ depend on how `D` is read, as long as `u ≠ v` is required.
 the standard axioms. `i(G) ≥ 5` is a `decide` check over all quadruples.
 
 In the same batch, annealing (`experiments/sa8.cpp`) on 8 to 14 vertices found no counterexample
-for 439 or 399c, and an exhaustive check up to 8 vertices found none either. 397c, 420b, 420c,
+for 399c, and an exhaustive check up to 8 vertices found none either. 439 is refuted below. 397c, 420b, 420c,
 422d, 423, 430a and 433 were also searched but have tracker activity, so we make no claim about
 them.
+
+## WOWII 439: false
+
+> Let `G` be a connected graph on `n > 3` vertices. Then `α_2(G) ≤ |N(M)| + ⌊2(CW(G) - 1)⌋`, where
+> `M` is the set of maximum degree vertices and `CW(G)` is the Caro–Wei invariant of `G`.
+
+`α_2` is the largest size of a set inducing maximum degree at most one, and
+`CW(G) = ∑_v 1/(deg v + 1)`. WOWII lists this conjecture as open. It has no activity on the
+formal-conjectures tracker (checked October 2026).
+
+**Counterexample.** `experiments/sa10.cpp` computes `α_2` by branch and bound, and
+`experiments/v439.py` verifies its result by brute force. The graph has 15 vertices and 26 edges:
+
+- Vertices `0, …, 9` induce the perfect matching `01, 23, 45, 67, 89`, so `α_2 ≥ 10`.
+- Vertices `10, …, 14` carry the other edges, and `14` is the only vertex of maximum degree `5`.
+  So `|N(M)| = 5` under any reading of `N(M)`.
+- The degrees are one `2`, seven `3`s, six `4`s and one `5`. So `CW = 69/20` and
+  `⌊2(CW - 1)⌋ = 4`.
+
+So the bound is `9 < 10`. The idea behind the construction: keep the large 2-independent set
+outside the neighbourhood of a unique maximum-degree vertex, and give every vertex a fairly high
+degree so that `CW` stays small. An exhaustive search finds no counterexample on 10 or fewer
+vertices, and annealing finds none on 11 to 14.
+
+**Formalization.** `WOWII439.not_conjecture439` in `OpenProblem/WOWII439.lean` depends only on the
+standard axioms.
 
 ## WOWII 169: proved
 
