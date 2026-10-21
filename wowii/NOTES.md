@@ -1,6 +1,6 @@
 # Graffiti-type graph conjectures: notes
 
-Status: **WOWII Conjecture 178 is proved and verified in Lean** (`OpenProblem/WOWII178.lean`).
+Status: **WOWII Conjectures 178 and 372 are proved and verified in Lean** (`OpenProblem/WOWII178.lean`, `OpenProblem/WOWII372.lean`).
 The other conjectures below are still open. For them we record evidence and partial results only.
 
 Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the JSON
@@ -38,6 +38,47 @@ spanning tree `T`. In any tree, the degree sum `∑ deg = 2n - 2` gives
 depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. Its definitions of
 `L_s` (spanning trees), `b` and `λ` mirror those in formal-conjectures
 (`SimpleGraph.Ls`, `largestInducedBipartiteSubgraphSize`, `indepNeighborsCard`).
+
+## WOWII 372: proved
+
+> If `T` is a tree on `n > 2` vertices, then `γ_t(T) ≥ v_c(T) / (p(T) - 1)`.
+
+The invariants:
+
+- `γ_t` is the total domination number.
+- `v_c` is the vertex cover number.
+- `p` is the path covering number.
+
+For a path, `p = 1` and the right side divides by zero. The real content is therefore
+`v_c ≤ (p - 1) γ_t` when `p ≥ 2`.
+
+The page notes that `p ≥ 3` follows from the bound `γ_t ≥ (2/3)(v_c + 1)`, quoted from a 2009
+preprint of DeLaViña, Larson, Pepper and Waller. That left the case `p = 2` open.
+
+**Proof.** Let `S` be a minimum total dominating set.
+
+- `p ≥ 3`, by edge counting. A tree has `n - 1` edges. At least `n - |S|` edges join `S` to the
+  rest, and at least `|S|/2` edges lie inside `S`. So at most `|S|/2 - 1` edges avoid `S`.
+  Then `S`, plus one end of each such edge, is a vertex cover. Hence `2 v_c + 2 ≤ 3 γ_t`.
+- `p = 2`. A tree covered by two vertex-disjoint paths is exactly those two paths `P` and `Q`
+  plus one edge `f i — g j`, because it has `n - 1` edges and the paths contribute `n - 2`.
+  - A vertex cover: one parity class of each path, plus possibly one vertex. Its size is
+    `⌊a/2⌋ + ⌊b/2⌋ + [a, b odd and i, j even]`, with 0-indexed positions.
+  - A matching lower bound for every total dominating set. Each vertex of a path has at most
+    two neighbours on it, so dominating `m` path vertices needs at least `⌈m/2⌉` of them.
+    When `f i` is dominated only by `g j`, split `P` at `i` to gain the extra one.
+
+Checked by computer for all trees up to 23 vertices (14.8 million at `n = 23`).
+
+**Formalization.** `OpenProblem/WOWII372.lean` contains two theorems. `conjecture372` gives
+`v_c ≤ (p - 1) γ_t` when `p ≥ 2`. `conjecture372_real` is the stated real inequality, using the
+convention `x / 0 = 0`. Both use Mathlib only and depend only on the axioms `propext`,
+`Classical.choice` and `Quot.sound`. The path cover definition is copied from formal-conjectures
+(`IsPathCover`).
+
+WOWII 367 (`γ_t ≥ (4/3)·dd(T)` for trees whose most frequent degree is 2, where `dd` is the number
+of distinct degrees) also holds for all trees up to 23 vertices when "most frequent" means a strict
+mode. With ties allowed, it fails at 12 vertices, for example on the graph6 tree `K????B?KCWKW`.
 
 ## Other targets examined (still open)
 
