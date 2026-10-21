@@ -1437,6 +1437,34 @@ invariants (`experiments/sa11.cpp` to `sa16.cpp`) and left open for the reason g
     (`peN`);
   - 427 (`C` and `P` undefined), 432a and 432b, and 443 (disparities).
 
+### Exhaustive search on 10 vertices (October 2026)
+
+`experiments/n10.cpp` and `experiments/n10b.cpp` check the following on all 11,716,571 connected
+graphs with 10 vertices:
+
+- `γ_t` bounds: 232, 233, 235, 255, 256, 268, 269, 287, 290, 299, 302 and 304;
+- `i` bounds: 418b, 421b, 421c, 422a, 422c, 431c, 434d and 434e (and the stronger
+  `i ≤ n - Δ - ecc(C) + 2`);
+- `γ_2` bounds: 382c, 382d, 387, 392b–f, 395a and 399c;
+- `α_2`: 448a, with `ρ` the path cover number;
+- well total domination: 324;
+- Hamiltonian paths: 189, 190, 199 and 213.
+
+None fails, except 269 under the reading "mean distance from the centre to all vertices", which
+already fails on `P_4`. Many are tight. Two of them, 255 and 256, were refuted afterwards by
+constructions on 11 and 15 vertices; see their sections.
+
+For 324, all hypothesis graphs up to 10 vertices fall into a few dense families. These are `K_n`,
+the cocktail party graphs, the complements of disjoint unions of `K_2`, `P_3` and `K_3`, and the
+complete split graphs, plus a few graphs with residue `R = Δ(Ḡ) ≥ 3`. In all of them every minimal
+total dominating set has two vertices.
+
+The hypothesis forces `Δ(Ḡ) ≤ R`, and the Favaron–Mahéo–Saclé bound `R ≤ α(G) = ω(Ḡ)` gives
+`Δ(Ḡ) ≤ R ≤ ω(Ḡ)`. When `R = 2`, `Ḡ` is a disjoint union of `K_2`, `P_3` and `K_3`, and `G` is
+well totally dominated: any two vertices from different factors of the join form a total
+dominating set. A full proof would need finer upper bounds on the Havel–Hakimi residue, since with
+`α` in place of `R` the statement fails on 7 vertices.
+
 ### TxGraffiti Conjecture 3 (refuted by others)
 
 *Update (October 2026):* formal-conjectures issue #6737 records a 48-vertex cubic counterexample
