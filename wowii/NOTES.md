@@ -4,14 +4,14 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 321, 323, 325, 326, 348,
   372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449.
-- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b, 425d, 425e,
-  439, 442 and 444.
+- **Refuted:** WOWII 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b, 425d,
+  425e, 439, 442 and 444.
 - **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
   graphs and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -912,6 +912,43 @@ proof predicts.
 standard axioms. It defines the Havel–Hakimi process explicitly. The key case is
 `WOWII436c.twoIndepNum_le_WP`.
 
+## WOWII 319: false
+
+> Let `G` be a simple connected graph with `n > 1`. If `max_v dist_even(v) = γ(G)`, then `G` is
+> well totally dominated.
+
+Here `dist_even(v)` counts the vertices at even distance from `v`, including `v` itself (as in
+formal-conjectures' `SimpleGraph.distEven`). WOWII lists this conjecture as open, and it has no
+activity on the formal-conjectures tracker (checked October 21, 2026).
+
+The vertices at even distance from any `v` form a dominating set, so `γ ≤ min_v dist_even(v)`.
+The hypothesis therefore forces every `dist_even(v)` to equal `γ`. An exhaustive search
+(`experiments/h319.c`) lists all connected graphs on at most 10 vertices that satisfy it. Apart
+from one graph, they are:
+
+- the complete graphs;
+- the cocktail party graphs `K_{2,…,2}`;
+- the coronas `H ∘ K₁`;
+- `C_7`.
+
+All of these are well totally dominated.
+
+**Counterexample.** The exception is the graph `I?`D@`WH_`, with 10 vertices, 12 edges and degrees
+`2, 2, 2, 2, 2, 2, 3, 3, 3, 3`. Its edges are 0-4, 0-6, 1-5, 1-8, 2-6, 2-7, 2-9, 3-7, 3-8, 4-8,
+5-9 and 6-9.
+
+- Every vertex has exactly four vertices at even distance (itself and three at distance 2).
+- `γ = 4`: `{0, 1, 2, 3}` dominates, and no three vertices do.
+- `{1, 2, 6, 8}` and `{0, 1, 3, 6, 8}` are minimal total dominating sets. There are also minimal
+  ones of size 6.
+
+So the hypothesis holds but `G` is not well totally dominated. By the search above, no smaller
+counterexample exists.
+
+**Formalization.** `WOWII319.not_conjecture319` in `OpenProblem/WOWII319.lean` depends only on
+the standard axioms. The distances are certified by breadth-first search tables
+(`dist_eq_of_bfs`), and the finite checks use `decide`.
+
 ## WOWII 321: proved
 
 > Let `G` be a simple connected graph with `n > 1`. If `ecc_avg(G) ≥ (1/3) Tdist_max(G)`, then `G`
@@ -1144,17 +1181,8 @@ neighbour `z` of `x`.
 So every minimal total dominating set has two vertices. Connectivity is not needed.
 
 The related conjectures 319, 321, 324, 325 and 328 also hold for all connected graphs up to 9
-vertices.
-
-For 319 we have a partial result: the vertices at even distance from any `v` form a dominating set.
-Hence `γ ≤ min_v dist_even(v)`, and the hypothesis `max dist_even = γ` makes every such set a
-minimum dominating set. The graphs satisfying this hypothesis include:
-
-- the complete graphs;
-- every corona `H ∘ K₁`;
-- `C₄`, `C₇` and `K_{2,2,2}`.
-
-So we have not found a characterization. Conjecture 321 is now proved; see its own section.
+vertices. Since then, 319 has been refuted on 10 vertices, and 321 and 325 have been proved; see
+their own sections.
 
 ## WOWII 358 and 359: false
 
