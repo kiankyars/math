@@ -2,8 +2,8 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
-  323, 325, 426, 434b, 434c, 435, 436c and 449.
+- **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 321, 323, 325, 326, 348,
+  372, 377, 380, 426, 434b, 434c, 435, 436c and 449.
 - **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b, 425d, 425e,
   439, 442 and 444.
 - **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
@@ -11,7 +11,7 @@ Status, all verified in Lean:
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -64,6 +64,11 @@ were proved by Hongxing Jiang in 2012.
 
 We prove the stronger bound `3 γ_t(T) ≥ 2|X| + 2`. It is sharp, for example for a star with one
 subdivided edge. The proof starts from a total dominating set `S`.
+
+*Later activity elsewhere (October 21, 2026):* after this work was committed, formal-conjectures
+issue #7510 and pull request #7512 (J. J. Gebendorfer) proposed the same stronger bound
+`2|X| + 2 ≤ 3|D|` for every total dominating set `D`, with a Lean proof. The PR was open when
+checked.
 
 - **Edge count.** At most `|S|/2 - 1` edges avoid `S`. This is the same count as in the WOWII 372
   proof.
@@ -187,7 +192,8 @@ occurring degree" is read.
 *Later activity elsewhere (October 21, 2026):* after this work was committed, formal-conjectures
 issue #7509 (J. J. Gebendorfer) reached the same split. It refutes the tied-mode reading with
 `P_4` (degrees `1, 2, 2, 1`) and gives a written proof of a stronger bound for the unique-mode
-reading. Its positive part is not formalized; ours is in Lean.
+reading. Pull request #7513 (same author, open when checked) later added a Lean proof of both
+parts.
 
 **Proof (strict mode).** Let `S` be a total dominating set and `m` the number of distinct degrees
 that are at least 3. The proof combines two counts.
@@ -878,6 +884,58 @@ proof predicts.
 standard axioms. It defines the Havel–Hakimi process explicitly. The key case is
 `WOWII436c.twoIndepNum_le_WP`.
 
+## WOWII 321: proved
+
+> Let `G` be a simple connected graph with `n > 1`. If `ecc_avg(G) ≥ (1/3) Tdist_max(G)`, then `G`
+> is well totally dominated.
+
+Here `Tdist(v) = Σ_u d(v, u)`. WOWII lists this conjecture as open, and it has no activity on the
+formal-conjectures tracker (checked October 21, 2026). In integers the hypothesis reads
+`n · Tdist(w) ≤ 3 Σ_v ecc(v)` for every `w`.
+
+**Proof.**
+
+- **At most six vertices.** Let `x, y` realise the diameter `D`. Summing `d(x, v) + d(v, y) ≥ D`
+  over all `v` gives `Tdist(x) + Tdist(y) ≥ nD`. Since every eccentricity is at most `D`, the
+  hypothesis gives `Tdist(x), Tdist(y) ≤ 3D`. Hence `n ≤ 6`.
+- **Six vertices.** All of these inequalities are now tight:
+  - every vertex `x` has eccentricity `D`;
+  - every vertex has an antipode `y` with `Tdist(x) = 3D`;
+  - every vertex lies on a shortest path from `x` to `y`.
+
+  So the four vertices other than `x` and `y` have distances from `x` in `[1, D - 1]` that sum to
+  `2D`.
+  - `D = 1` is impossible.
+  - `D = 2`: every vertex has exactly one non-neighbour (`K_{2,2,2}`). Every edge is then a total
+    dominating set, so every minimal one has size 2.
+  - `D = 3`: the distances are two 1s and two 2s, so the graph is 2-regular (`C_6`). For a minimal
+    total dominating set `S`, let `f(v)` be the number of neighbours of `v` in `S`. Then
+    `Σ f = 2|S|` and `1 ≤ f ≤ 2`.
+    - Each vertex of `S` has a private neighbour, which gives `|S|` vertices with `f = 1`. Hence
+      `2|S| ≤ 12 - |S|`, so `|S| ≤ 4`.
+    - Also `2|S| ≥ 6`, so `|S| ≥ 3`.
+    - If `|S| = 3`, every vertex has `f = 1`, so `S` would induce a perfect matching on three
+      vertices, which is impossible. So `|S| = 4`.
+  - `D ≥ 4` is impossible. A connected graph on 6 vertices has at least 5 edges, so some vertex
+    `x` has two neighbours `p, q`. On a shortest path from `x` to its antipode, take the vertices
+    `r, s` at distances `D - 1` and `D - 2`. Then `p, q, r, s` are the four other vertices, and
+    their distances from `x` sum to `2D - 1 ≠ 2D`.
+- **Two to five vertices.** Here the kernel checks every graph on two to five labelled vertices
+  (1, 8, 64 and 1024 graphs) by `decide +kernel`, using a checker that:
+  - computes distances by breadth-first search on bit masks;
+  - enumerates all vertex sets to compare the sizes of the minimal total dominating sets.
+
+  The checker's correctness is proved in Lean: the BFS masks against `SimpleGraph.dist`, and the
+  masks against `Finset`s. So the result needs no trusted computation. The kernel check takes about
+  20 seconds.
+
+The 16 graphs satisfying the hypothesis are `K_2`, `P_3`, `K_3`, `K_{1,3}`, `P_4`, the paw, `C_4`,
+`K_4 - e`, `K_4`, `K_{2,3}`, `C_5`, the house, `K_{2,3}` plus an edge, `K_{1,2,2}`, `C_6` and
+`K_{2,2,2}` (`experiments/c321.py`).
+
+**Formalization.** `WOWII321.conjecture321` in `OpenProblem/WOWII321.lean` depends only on the
+axioms `propext`, `Classical.choice` and `Quot.sound`.
+
 ## WOWII 323: proved
 
 > Let `G` be a simple connected graph with `n > 1`. If
@@ -1068,16 +1126,7 @@ minimum dominating set. The graphs satisfying this hypothesis include:
 - every corona `H ∘ K₁`;
 - `C₄`, `C₇` and `K_{2,2,2}`.
 
-So we have not found a characterization. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices: a vertex of
-eccentricity `D` has `Tdist ≥ n - 1 + D(D - 1)/2`, while `ecc_avg ≤ D`. An exhaustive check up to 8 vertices (`experiments/c321.py`) shows that exactly 16 connected
-graphs satisfy it, all with at most 6 vertices:
-
-- `K_2`, `P_3`, `K_3`, `K_{1,3}`, `P_4`, `C_4`, the paw, `K_4 - e` and `K_4`;
-- `C_5`, `K_{2,3}` and three other graphs on 5 vertices;
-- `C_6` and `K_{2,2,2}`.
-
-All 16 are well totally dominated, so 321 holds by computer check. This is not verified in Lean,
-so we do not list 321 as proved above.
+So we have not found a characterization. Conjecture 321 is now proved; see its own section.
 
 ## WOWII 358 and 359: false
 
