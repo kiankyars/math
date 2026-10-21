@@ -1,7 +1,8 @@
 # Graffiti-type graph conjectures: notes
 
-Status: **WOWII Conjectures 178, 348 and 372 are proved and verified in Lean** (`OpenProblem/WOWII178.lean`,
-`OpenProblem/WOWII348.lean`, `OpenProblem/WOWII372.lean`).
+Status: **WOWII Conjectures 178, 348, 372 and 377 are proved and verified in Lean**
+(`OpenProblem/WOWII178.lean`, `OpenProblem/WOWII348.lean`, `OpenProblem/WOWII372.lean`,
+`OpenProblem/WOWII377.lean`).
 The other conjectures below are still open. For them we record evidence and partial results only.
 
 Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the JSON
@@ -75,6 +76,47 @@ vertices on.
 `conjecture348_real` is the stated real inequality. Both use Mathlib only and depend only on the
 axioms `propext`, `Classical.choice` and `Quot.sound`. The edge count is shared with the 372 proof as
 `WOWII372.card_noneIn_le`.
+
+## WOWII 377: proved
+
+> If `T` is a tree on `n > 2` vertices, then
+> `γ_t(T) ≥ number of isolates of <M> + upper median(T)`.
+
+The invariants:
+
+- `M` is the set of vertices of maximum degree.
+- The isolates of `<M>` are the maximum-degree vertices with no maximum-degree neighbour. Call
+  this set `I`.
+- The upper median is the entry at 0-based position `⌊n/2⌋` of the nondecreasing degree
+  sequence.
+
+WOWII lists this conjecture as open (dated February 2009).
+
+**Proof.** Let `S` be a total dominating set.
+
+- **The median is 1 or 2.** A tree has at least `2 + #(degree ≥ 3)` leaves, so fewer than half
+  of its vertices have degree at least 3. The upper median is therefore 1 or 2, and it is 2
+  exactly when at most half of the vertices are leaves.
+- **`|I| + 1 ≤ |S|`, by edge counting.** Take:
+  - one edge from each `v ∈ I ∩ S` to `S`;
+  - all edges at each `v ∈ I - S`, at least two each;
+  - one edge from each other vertex outside `S` to `S`.
+
+  These edges are distinct because `I` is independent, and a tree has `n - 1` edges.
+- **`|I| + 2 ≤ |S|` when at most half of the vertices are leaves.**
+  - If the maximum degree is at least 3 and `|S| = |I| + 1`, the count is tight. Then `I ⊆ S`
+    and every vertex outside `S` is a leaf, and a degree-sum count shows that more than half of
+    the vertices are leaves.
+  - If the maximum degree is 2, then `T` is a path, and `I` is empty unless `n = 3`.
+
+Equality holds, for example, when the neighbours of one vertex are centres of stars of a larger
+degree. The bound held with these exact definitions for all trees up to 17 vertices before the
+proof was found (`experiments/trees_battery.cpp`).
+
+**Formalization.** `WOWII377.conjecture377` in `OpenProblem/WOWII377.lean` uses Mathlib only and
+depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. The upper median is
+defined literally, as the entry at index `⌊n/2⌋` of `Multiset.sort` applied to the degree
+multiset.
 
 ## WOWII 372: proved
 
