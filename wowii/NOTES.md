@@ -4,14 +4,15 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
   426, 434b, 434c, 435, 436c and 449.
-- **Refuted:** WOWII 267, 281, 300, 328, 399b, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 439,
-  442, 444, 382b and 401b. The last two fail on
-  very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
+- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b, 425d, 425e,
+  439, 442 and 444.
+- **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
+  graphs and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -739,6 +740,19 @@ vertices, and annealing finds none on 11 to 14.
 
 **Formalization.** `WOWII439.not_conjecture439` in `OpenProblem/WOWII439.lean` depends only on the
 standard axioms.
+
+## WOWII 399a: false as stated (complete graphs)
+
+> If `G` is a connected graph on `n > 2` vertices, then `γ_2 ≤ WP(Ḡ) + ⌊α(G[C])/2⌋`, where `C`
+> is the center.
+
+WOWII marks this "open, partial results known". Its note says that, since `γ_2 ≤ α_2 ≤ WP(Ḡ) + 1`,
+it remains to settle `γ_2 ≤ WP(Ḡ)` when `α(G[C]) = 1`. That case fails for every complete graph
+`K_n` with `n ≥ 3`: `γ_2(K_n) = 2`, while `WP(K̄_n) = 1` and `α(K_n) = 1`.
+
+Graffiti.pc's database surely contains complete graphs, so this suggests a transcription problem,
+as for 382b. `WOWII399a.not_conjecture399a` in `OpenProblem/WOWII399a.lean` refutes the printed
+statement with the triangle, and depends only on the standard axioms.
 
 ## WOWII 399b: false
 
