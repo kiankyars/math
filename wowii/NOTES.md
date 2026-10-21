@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 178, 241, 348, 372, 377 and 380.
+- **Proved:** WOWII 178, 241, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII178.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII178.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -202,6 +202,41 @@ gives `3γ_t ≥ 4(m + 2) ≥ 4 dd`.
 - `not_conjecture367_ties`: the tie-allowing reading is false, checked on the 12-vertex tree.
 
 All three depend only on the standard axioms.
+
+## WOWII 326: proved
+
+> Let `G` be a simple connected graph with `n > 1`. If `3 μ(G) ≤ |E(S)|`, where `S` is the set of
+> vertices of degree two, then `G` is well totally dominated.
+
+Here `μ` is the matching number, `E(S)` is the set of edges joining two degree-2 vertices, and a
+graph is well totally dominated when all its minimal total dominating sets have the same size.
+
+**Proof.** The hypothesis forces `G = K₃`. Let `M` be a maximum matching.
+
+- **Every `E(S)`-edge meets `M`.** Otherwise `M` could be enlarged.
+- **Each `uv ∈ M` meets at most three `E(S)`-edges.** Equality holds only if `u` and `v` have
+  degree 2 and all edges at `u` and `v` lie in `E(S)`.
+- **So every `uv ∈ M` meets exactly three.** Combined with `3|M| ≤ |E(S)|`, the bound must be
+  tight for each `uv ∈ M`.
+
+Fix `uv ∈ M`, and let `x` and `y` be the other neighbours of `u` and `v`.
+
+- Neither `x` nor `y` is covered by `M`. If `xz ∈ M`, it would also have to meet all three edges
+  at `x` and `z`, including `ux`, which already belongs to `uv`.
+- If `x ≠ y`, then `x-u-v-y` is an augmenting path, which is impossible.
+- So `x = y`, and `u, v, x` is a triangle of degree-2 vertices, which is all of `G`.
+
+The triangle is well totally dominated, since all its minimal total dominating sets have two
+vertices. An exhaustive check found that the hypothesis holds only for `K₃` among all connected
+graphs up to 9 vertices.
+
+**Formalization.** `WOWII326.conjecture326` in `OpenProblem/WOWII326.lean` defines matchings,
+minimal total dominating sets and well total domination directly. It depends only on the standard
+axioms.
+
+The related conjectures 318, 319, 320, 321, 324, 325 and 328 also hold for all connected graphs up
+to 9 vertices. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices, so it
+reduces to a finite check, but we have not formalized that check.
 
 ## WOWII 358 and 359: false
 
