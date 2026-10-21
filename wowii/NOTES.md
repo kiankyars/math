@@ -3,13 +3,14 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 178, 241, 348, 372, 377 and 380.
-- **Refuted:** WOWII 378.
+- **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII178.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII367.lean`, `WOWII372.lean`, `WOWII377.lean`
-and `WOWII378.lean`.
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
+`WOWII377.lean` and `WOWII378.lean`.
+
 The other conjectures below are still open. For them we record evidence and partial results only.
 
 Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the JSON
@@ -202,6 +203,47 @@ gives `3γ_t ≥ 4(m + 2) ≥ 4 dd`.
 
 All three depend only on the standard axioms.
 
+## WOWII 358 and 359: false
+
+> **358.** If `T` is a tree on `n > 2` vertices, then
+> `γ_t(T) ≥ ½ ecc(C) + number of isolates of <S(T)>`.
+
+> **359.** If `T` is a tree on `n > 2` vertices, then
+> `γ_t(T) ≥ ½ ecc(C) + number of components of <S(T) ∪ L>`.
+
+Here `C` is the center, `S(T)` the set of support vertices and `L` the set of leaves. Each
+isolated support vertex together with its leaves is a component of `<S(T) ∪ L>`, so a
+counterexample to 358 is also one to 359.
+
+**Set eccentricity, `ecc(C) = max_v d(v, C)`.** This is the convention formal-conjectures uses
+for WOWII.
+
+- The counterexample is the 19-vertex tree with spine
+  `3-13-2-17-11-0-15-6-16-1-12-18-4-14-5` and pendant leaves at `17, 15, 16, 18`.
+- Its center is `{6}` with `ecc(C) = 7`, it has six pairwise non-adjacent supports, and
+  `γ_t = 9 < 7/2 + 6`.
+- It is the only counterexample with at most 19 vertices: all trees up to 19 vertices were
+  checked.
+
+The construction behind it: take a path and attach leaves at positions `5j+1` and `5j+3`. Then
+`{5j+1, 5j+2, 5j+3}` is a total dominating set of size `3m` with `2m` isolated supports, while
+`½ ecc(C) ≈ 5m/4`. The gap grows linearly; for example, at 205 vertices `γ_t = 89 < 95.5`. A
+random search over trees with at most 60 vertices had missed this family.
+
+**Radius, `ecc(C)` = eccentricity of a center vertex.** The 12-vertex tree with spine
+`2-8-1-10-0-7-11-3-9-4` and leaves at `10, 11` has radius 5 and four isolated supports, and
+`γ_t = 6 < 5/2 + 4`.
+
+**Formalization.** `OpenProblem/WOWII358.lean` contains `not_conjecture358`,
+`not_conjecture359`, `not_conjecture358_rad` and `not_conjecture359_rad`. The checks use:
+
+- a path in a tree realises the distance between its ends;
+- explicit walks bound the eccentricity of `6`;
+- the triangle inequality bounds `d(3, c)` for every center `c`;
+- decided total dominating sets and support sets.
+
+All four theorems depend only on the standard axioms.
+
 ## WOWII 380 and 241: proved
 
 > **380.** If `T` is a tree on `n > 2` vertices, then `γ_t(T) ≥ |D_even(T)| / (ecc(C) - 1)`, where
@@ -357,8 +399,7 @@ graphs at `n = 10`); those seven were checked exhaustively up to 9 vertices.
 
 - Other tree conjectures of this batch were tested with all trees up to 17 vertices and 20,000
   random trees with at most 60 vertices (`experiments/trees_battery.cpp`):
-  - 242, 342, 343, 344, 356 (distance-to-set reading), 358 and 359 (set-eccentricity reading)
-    show no counterexample.
+  - 242, 342, 343, 344 and 356 (distance-to-set reading) show no counterexample.
   - 374 and 375 fail on trees with 3 to 5 vertices under every reading of `B`, `dist_avg` and
     the median that we tried. This points to a transcription problem, so we do not claim them.
 - WOWII 174 (`L_s + b ≥ n + max λ - 1`, Conjecture 3 of DeLaViña–Waller 2008) and
