@@ -6,15 +6,15 @@ Status, all verified in Lean:
   372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449.
 - **Refuted:** WOWII 255, 256, 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402,
   422b, 425d, 425e, 439, 442 and 444.
-- **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
-  graphs and stars), which suggests transcription problems; see their sections.
+- **False as stated:** WOWII 382b, 399a, 401b and 412f. These fail on very small graphs (`K_3`,
+  complete graphs and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:**
   - WOWII 367 is true when degree 2 is a strict mode and false when ties are allowed.
   - WOWII 434a is true when its undefined `M` is the set of maximum degree vertices, and false
     when `|M|` is read as the number of pendants (the set `P` that the statement defines).
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII255.lean`, `WOWII256.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII412f.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -632,6 +632,29 @@ So the bound is at most `1 + 2² = 5`. But `i(G) = 6`. Let `I` be an independent
   at least five vertices.
 
 **Formalization.** `WOWII422b.not_conjecture422b` in `OpenProblem/WOWII422b.lean` depends only on
+the standard axioms.
+
+## WOWII 412f: false as stated
+
+> Let `G` be a connected graph on `n > 2` vertices, `P` the set of pendants and `H` the union of all
+> maximum critical independent sets. Then `|H| ≥ μ(G[V - N(P)])`, and if `G` is also bipartite,
+> then `|H| ≥ c(G[V - N(P)]) + μ(G[V - N(P)])`.
+
+The critical difference is the largest `|X| - |N(X)|` over all vertex sets `X` (Zhang; Larson).
+An independent set is critical if it attains it. For `K_3`:
+
+- `P = ∅`, so the right-hand side of the first clause is `μ(K_3) = 1`.
+- The critical difference is `0`, attained by `∅`, while every single vertex gives `-1`.
+- So `∅` is the only critical independent set, and `H = ∅`.
+
+Hence the first clause fails. It also fails for every complete graph and every odd cycle. Since
+Graffiti.pc's database contains these graphs, this points to a transcription problem.
+
+The bipartite clause holds for all bipartite graphs up to 10 vertices, with bipartite annealing
+up to 18. It is tight throughout and remains open. It does not follow from `|H| ≥ α`:
+`α - c - μ` reaches `-3` on 10 vertices.
+
+**Formalization.** `WOWII412f.not_conjecture412f` in `OpenProblem/WOWII412f.lean` depends only on
 the standard axioms.
 
 ## WOWII 434b and 434c: proved
@@ -1424,8 +1447,8 @@ invariants (`experiments/sa11.cpp` to `sa16.cpp`) and left open for the reason g
   - The Hamiltonian-path conditions 189, 190, 199 and 213, and 177, 384b and 418b, up to
     15 vertices (`sa14.cpp`).
 - **Fails on tiny graphs under the natural reading (likely transcription problems):**
-  - the general part of 412f, which fails on `K_4` because its only critical independent set is
-    empty;
+  - the general part of 412f, which fails on `K_3` and `K_4` because their only critical
+    independent set is empty (now formalized; see "WOWII 412f: false as stated");
   - 398, which fails on 5 vertices;
   - 446, and 448a with `ρ` the longest induced path, which fail on 6 vertices;
   - 448b under both readings of `ρ`.
