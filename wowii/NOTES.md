@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 96, 169, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -202,6 +202,29 @@ gives `3γ_t ≥ 4(m + 2) ≥ 4 dd`.
 - `not_conjecture367_ties`: the tie-allowing reading is false, checked on the 12-vertex tree.
 
 All three depend only on the standard axioms.
+
+## WOWII 169: proved
+
+> If `G` is a simple connected graph, then
+> `L_s(G) ≥ 1 + maximum of dist_even(v) − minimum of dist_even(v)`.
+
+WOWII lists this conjecture as open.
+
+**Proof.**
+
+- **A tree whose edges cross parity.** Fix a root `r`. The edges whose ends lie at different
+  distances from `r` form a connected spanning subgraph, because each vertex has a neighbour one
+  step closer to `r`. A spanning tree `T` of this subgraph has every edge joining an even-distance
+  vertex to an odd-distance one.
+- **A degree count.** If every edge of a tree has exactly one end in `X`, then
+  `∑_{x∈X} deg x = n − 1`. Each vertex has degree at least 1, and at least 2 unless it is a leaf,
+  so `2|X| ≤ n − 1 + #leaves(X)`.
+- **Combining.** Root at the `dist_even` minimiser and take `X` = the odd vertices: this gives
+  `n − 2·min ≤ L_s − 1`. Root at the maximiser and take `X` = the even vertices: this gives
+  `2·max − n ≤ L_s − 1`. Adding the two proves the conjecture.
+
+**Formalization.** `WOWII169.conjecture169` in `OpenProblem/WOWII169.lean` depends only on the
+standard axioms.
 
 ## WOWII 96: proved
 
