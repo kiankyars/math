@@ -4,8 +4,8 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 321, 323, 325, 326, 348,
   372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449.
-- **Refuted:** WOWII 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b, 425d,
-  425e, 439, 442 and 444.
+- **Refuted:** WOWII 256, 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b,
+  425d, 425e, 439, 442 and 444.
 - **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
   graphs and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:**
@@ -13,7 +13,7 @@ Status, all verified in Lean:
   - WOWII 434a is true when its undefined `M` is the set of maximum degree vertices, and false
     when `|M|` is read as the number of pendants (the set `P` that the statement defines).
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII256.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -285,6 +285,35 @@ We prove `3 γ_t ≤ Tdist(v) + 5` for **every** vertex `v`, which is equivalent
 
 **Formalization.** `WOWII310.conjecture310` (with `three_mul_totalDomNum_le` for every vertex) in
 `OpenProblem/WOWII310.lean` depends only on the standard axioms.
+
+## WOWII 256: false
+
+> If `G` is a simple connected graph, then `γ_t(G) ≥ 2|N(A)| / max {|N(e)| : e ∈ E(G)}`, where `A`
+> is the set of vertices of minimum degree.
+
+WOWII lists this conjecture as open, and it has no activity on the formal-conjectures tracker
+(checked October 21, 2026). Exhaustive search up to 10 vertices and annealing up to 20 vertices
+found no counterexample.
+
+**Counterexample.** The 15-vertex graph has 20 edges:
+
+- a vertex `c` adjacent to `ℓ₁` and `ℓ₂`;
+- six further neighbours for each `ℓᵢ`, matched in pairs.
+
+Every vertex other than `ℓ₁` and `ℓ₂` has degree 2. So `N(A) = V - {c}` and `|N(A)| = 14`. The
+largest `|N(e)|` is 9, on `cℓᵢ`. But `{c, ℓ₁, ℓ₂}` is a total dominating set, so
+`γ_t = 3 < 28/9`. Reading `N(A)` as the closed neighbourhood only enlarges the bound.
+
+More generally, take `t` such vertices `ℓᵢ` with `p` matched private neighbours each. Then
+`γ_t = t + 1`, `|N(A)| = t(p + 1)` and `max |N(e)| = t + p + 1`. The bound fails when
+`(t + 1)(t + p + 1) < 2t(p + 1)`, for example for `t = 2, p ≥ 6` and `t = 3, p ≥ 6`.
+
+The construction exploits the weakness of the general bound `γ_t · max |N(e)| ≥ 2n`: a star in
+the total dominating set whose leaves have many private neighbours. Annealing found no smaller
+counterexample on 11 to 14 vertices (`experiments/c256.py`).
+
+**Formalization.** `WOWII256.not_conjecture256` in `OpenProblem/WOWII256.lean` depends only on the
+standard axioms.
 
 ## WOWII 267: false
 
