@@ -3,7 +3,7 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
-  426, 434b, 434c, 435, 436c and 449.
+  323, 426, 434b, 434c, 435, 436c and 449.
 - **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b, 425d, 425e,
   439, 442 and 444.
 - **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
@@ -11,7 +11,7 @@ Status, all verified in Lean:
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII323.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -878,6 +878,43 @@ proof predicts.
 standard axioms. It defines the Havel–Hakimi process explicitly. The key case is
 `WOWII436c.twoIndepNum_le_WP`.
 
+## WOWII 323: proved
+
+> Let `G` be a simple connected graph with `n > 1`. If
+> `max {|N_Ḡ(e)| : e ∈ E(Ḡ)} ≤ 1 + max {dist_odd(v) - odd horizontal(v)}`, then `G` is well totally
+> dominated.
+
+`N_Ḡ(uw) = N_Ḡ(u) ∪ N_Ḡ(w)`. `odd horizontal(v)` counts the edges whose endpoints are at the same
+odd distance from `v`, as in formal-conjectures' 309. WOWII lists this conjecture as open, and it
+has no activity on the formal-conjectures tracker (checked October 2026). Among connected graphs
+with at most 9 vertices, the hypothesis holds only for complete bipartite graphs with a few edges
+added inside the parts (`experiments/h323.py`). That suggested the proof.
+
+**Proof.** Let `v` attain the maximum, let `L` be the left-hand side, and set `A = N(v)` and
+`B = V - A`.
+
+1. *Diameter at most two.* If `d(x, y) ≥ 3`, then `x` and `y` have disjoint closed
+   neighbourhoods, so `|N_Ḡ(x) ∪ N_Ḡ(y)| = n`. Hence `dist_odd(v) ≥ n - 1`, and every other
+   vertex is at odd distance from `v`. A vertex at distance at least 3 would give one at distance
+   2, so all vertices are adjacent to `v`, contradicting `d(x, y) ≥ 3`.
+2. *Rewriting the hypothesis.* Now `dist_odd(v) ≤ deg v`, and `odd horizontal(v) ≥ |E(G[A])|`. For
+   non-adjacent `u ≠ w`, `|N_Ḡ(u) ∪ N_Ḡ(w)| = n - |N(u) ∩ N(w)|`. So every non-adjacent pair has at
+   least `n - L` common neighbours, and `|E(G[A])| ≤ 1 + |A| - L`.
+3. *`G` contains all edges between `A` and `B`.* Suppose `b ∈ B - {v}` is not adjacent to
+   `a ∈ A`. Their common neighbours lie in `N_A(a) ∪ (B - {b, v})`. That gives at most
+   `|E(G[A])| + |B| - 2 ≤ n - L - 1` of them, which is a contradiction.
+4. *Every minimal total dominating set has two vertices.*
+   - A set containing `a ∈ A` and `b ∈ B` contains the dominating pair `{a, b}`.
+   - A set inside `B` cannot dominate `v`.
+   - A minimal set inside `A` contains an edge `xy`. Suppose `z ∈ A` missed both `x` and `y`. Let
+     `K` be the common `A`-neighbours of `z` and `x`. Then step 2 gives `|K| ≥ |E(G[A])| - 1`.
+   - The edges `xy`, `zw` and `xw` for `w ∈ K` give `|E(G[A])| ≥ 1 + 2|K|`, so `G[A]` has at most
+     one edge. But `z`'s neighbour in the set gives a second edge, which is a contradiction. So
+     `{x, y}` dominates.
+
+**Formalization.** `WOWII323.conjecture323` in `OpenProblem/WOWII323.lean` depends only on the
+standard axioms.
+
 ## WOWII 169: proved
 
 > If `G` is a simple connected graph, then
@@ -1173,9 +1210,6 @@ invariants (`experiments/sa11.cpp` to `sa16.cpp`) and left open for the reason g
 
 - **Holds in every test, no proof found:**
   - 61 (`f ≥ res + ⌈diam/3⌉`): annealing up to 24 vertices, with growing slack (`sa61.cpp`).
-  - 323: well totally dominated when the hypothesis holds, with the horizontal-edge count read as
-    in formal-conjectures' 309. The hypothesis holds for few graphs: complete bipartite graphs and
-    their supergraphs with edges inside the parts.
   - 448a, with `ρ` the path cover number: tight up to 14 vertices.
   - 450, with `p N(X)` the path cover number of `G[N(X)]`: up to 14 vertices.
   - The bipartite part of 412f (`|H| ≥ c(G[V - N(P)]) + μ(G[V - N(P)])`, with `H` the union of
