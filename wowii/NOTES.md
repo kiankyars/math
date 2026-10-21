@@ -2,14 +2,15 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377 and 380.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378 and 382b (the last only by `K_3`; see its
+- **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380 and
+  449.
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 442 and 382b (the last only by `K_3`; see its
   section).
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII442.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -403,6 +404,49 @@ WOWII lists this conjecture as open (August 2005).
 
 **Formalization.** `WOWII179.conjecture179` in `OpenProblem/WOWII179.lean` depends only on the
 standard axioms. The bound on `b` is `domNum_add_le_b`.
+
+## WOWII 449: proved
+
+> Let `G` be a connected graph on `n > 3` vertices. Then
+> `α_2(G) ≤ |V \ H_3| + ⌈(|E(G[H_3])| − 1)/2⌉`, where `H_3` is the set of vertices of degree at
+> least 3.
+
+Here `α_2` is the 2-independence number: the largest set inducing maximum degree at most 1. WOWII
+lists this conjecture as open (January 2012).
+
+**Proof** (any finite graph). Let `S` be 2-independent, `L = V \ H_3`, and `A = S ∩ H_3`.
+
+- Each `a ∈ A` has degree at least 3 and at most one neighbour in `S`, so it has at least two
+  neighbours outside `S`.
+- A vertex of `L \ S` has degree at most 2, so it receives at most two of these edges.
+- The edges from `A` to `H_3 \ S` are distinct edges of `G[H_3]`.
+
+Hence `2|A| ≤ 2|L \ S| + e(H_3)`, and so `|S| = |A| + |S ∩ L| ≤ |L| + ⌊e(H_3)/2⌋`. Finally,
+`⌊e/2⌋ = ⌈(e − 1)/2⌉` for every `e ≥ 0`.
+
+**Formalization.** `WOWII449.conjecture449` in `OpenProblem/WOWII449.lean` depends only on the
+standard axioms.
+
+## WOWII 442: false
+
+> Let `G` be a connected graph on `n > 3` vertices. Then
+> `α_2(G) ≤ n − ⌈path(G[H_3])/2⌉`.
+
+WOWII lists this conjecture as open (January 2012).
+
+**Counterexample.** The fan `F_{1,14}` is the path `0 – ⋯ – 13` plus a vertex adjacent to all of
+it.
+
+- The inner vertices `1, …, 12` have degree 3 and induce a path with 12 vertices (11 edges). So
+  the bound is at most `15 − 6 = 9`, whether `path` counts vertices or edges.
+- The set `{0, 1, 3, 4, 6, 7, 9, 10, 12, 13}` induces five disjoint edges, so `α_2 ≥ 10`.
+
+In general `α_2(F_{1,p}) = ⌈2p/3⌉`. With `path` counting vertices, `F_{1,11}` (12 vertices) is
+already a counterexample (`experiments/fan442.py`). The conjecture holds for all connected graphs
+up to 9 vertices (`experiments/t449.cpp`, which also checks 444 and 449).
+
+**Formalization.** `OpenProblem/WOWII442.lean` contains `not_conjecture442` (vertices) and
+`not_conjecture442_length` (edges). Both depend only on the standard axioms.
 
 ## WOWII 169: proved
 

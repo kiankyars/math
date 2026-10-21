@@ -22,3 +22,5 @@ import OpenProblem.WOWII300
 import OpenProblem.WOWII281
 import OpenProblem.WOWII382b
 import OpenProblem.WOWII179
+import OpenProblem.WOWII449
+import OpenProblem.WOWII442
