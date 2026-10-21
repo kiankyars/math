@@ -3,11 +3,11 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 241, 310, 318, 320, 326, 348, 372, 377 and 380.
-- **Refuted:** WOWII 267, 358, 359 and 378.
+- **Refuted:** WOWII 267, 300, 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII267.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII267.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -307,6 +307,33 @@ standard axioms:
 Distances are bounded below by functions that grow by at most one along each edge
 (`le_add_dist`). Girth at least 5 follows from the absence of triangles and of two vertices with
 two common neighbours (`five_le_egirth`).
+
+## WOWII 300: false
+
+> If `G` is a simple connected graph with `n > 2`, then
+> `γ_t(G) ≤ (1/2)[n + frequency of λ_min(Ḡ)]`.
+
+Here `λ_Ḡ(v) = α(Ḡ[N_Ḡ(v)])` is the order of a largest clique of `G` among the non-neighbours
+of `v`. WOWII lists this conjecture as open.
+
+**Counterexample.** `G12` has 12 vertices and 13 edges (graph6 `K{O`?CCA?@?D`):
+
+- two triangles `{0, 1, 2}` and `{7, 8, 9}`, joined by the path `2 – 5 – 7`;
+- a leaf `4` at `0`, the path `2 – 10 – 3`, and the path `1 – 11 – 6`.
+
+Only `N[5]` meets both triangles. So `λ_Ḡ(5) = 2` and `λ_Ḡ(v) = 3` for every other `v`, the
+frequency is 1, and the bound is `13/2`.
+
+However `γ_t = 7`. Any total dominating set contains the supports `0`, `10` and `11`. It meets
+`N(10) = {2, 3}` and `N(11) = {1, 6}`. It needs two of `5, 7, 8, 9`: vertices 8 and 9 force 7 or
+both of 8 and 9, and 7 itself needs a neighbour.
+
+**Search.** Exhaustive search finds no counterexample on connected graphs with at most 10
+vertices (11,716,571 graphs at `n = 10`, `experiments/c300.cpp`). Simulated annealing finds many
+counterexamples at `n = 12`.
+
+**Formalization.** `WOWII300.not_conjecture300` in `OpenProblem/WOWII300.lean` depends only on the
+standard axioms.
 
 ## WOWII 169: proved
 
@@ -635,7 +662,7 @@ graphs at `n = 10`); those seven were checked exhaustively up to 9 vertices.
   5-cycles found no counterexample to 174.
 - The total domination bounds 232, 233 and 235 (with `ecc(B)` read as `max_v d(v, B)` for `B` the
   periphery or the boundary), 268 and 269 (pairwise mean distance of the centre), 281, 287, 290,
-  298, 299, 300, 302, 304 and 305 hold for all connected graphs up to 9 vertices
+  298, 299, 302, 304 and 305 hold for all connected graphs up to 9 vertices
   (`experiments/t302.cpp`). For 298, `χ_C4` is the indicator of being C4-free, as in 133: with
   the opposite reading, the conjecture fails on `C3`, `C5`, `C6`, `C7` and `P6`.
 - The Hamiltonian-path conditions 189, 190 and 213 hold for all connected graphs up to 9
