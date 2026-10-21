@@ -97,10 +97,9 @@ def BothIn (S : Finset V) (e : Sym2 V) : Prop := ∀ v ∈ e, v ∈ S
 /-- `e` has no end in `S`. -/
 def NoneIn (S : Finset V) (e : Sym2 V) : Prop := ∀ v ∈ e, v ∉ S
 
-/-- In a tree, a total dominating set `S` yields a vertex cover `C` with
-`2|C| + 2 ≤ 3|S|`. -/
-lemma exists_vc_of_tds {T : SimpleGraph V} (hT : T.IsTree) {S : Finset V} (hS : IsTDS T S) :
-    ∃ C, IsVC T C ∧ 2 * #C + 2 ≤ 3 * #S := by
+/-- In a tree, at most `|S|/2 - 1` edges avoid a total dominating set `S`. -/
+lemma card_noneIn_le {T : SimpleGraph V} (hT : T.IsTree) {S : Finset V} (hS : IsTDS T S) :
+    2 * #(T.edgeFinset.filter (NoneIn S)) + 2 ≤ #S := by
   let E := T.edgeFinset
   let Ein := E.filter (BothIn S)
   let Erest := E.filter (fun e => ¬ BothIn S e)
@@ -151,6 +150,23 @@ lemma exists_vc_of_tds {T : SimpleGraph V} (hT : T.IsTree) {S : Finset V} (hS : 
           intro e he
           obtain ⟨v, hv, rfl⟩ := Finset.mem_image.mp he
           exact hmap v hv
+  have hEout : Eout = T.edgeFinset.filter (NoneIn S) := by
+    ext e
+    simp only [Eout, Erest, E, Finset.mem_filter]
+    constructor
+    · rintro ⟨⟨he, -⟩, hn⟩
+      exact ⟨he, hn⟩
+    · rintro ⟨he, hn⟩
+      exact ⟨⟨he, fun hb => hn _ (Sym2.out_fst_mem e) (hb _ (Sym2.out_fst_mem e))⟩, hn⟩
+  rw [← hEout]
+  omega
+
+/-- In a tree, a total dominating set `S` yields a vertex cover `C` with
+`2|C| + 2 ≤ 3|S|`. -/
+lemma exists_vc_of_tds {T : SimpleGraph V} (hT : T.IsTree) {S : Finset V} (hS : IsTDS T S) :
+    ∃ C, IsVC T C ∧ 2 * #C + 2 ≤ 3 * #S := by
+  let Eout := T.edgeFinset.filter (NoneIn S)
+  have hcount : 2 * #Eout + 2 ≤ #S := card_noneIn_le hT hS
   -- the cover: `S` together with one end of each edge avoiding `S`
   refine ⟨S ∪ Eout.image (fun e => e.out.1), ?_, ?_⟩
   · intro u v huv
@@ -163,10 +179,7 @@ lemma exists_vc_of_tds {T : SimpleGraph V} (hT : T.IsTree) {S : Finset V} (hS : 
       rcases Sym2.mem_iff.mp hw with rfl | rfl
       · exact hu
       · exact hv
-    have he : s(u, v) ∈ Eout := by
-      refine Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr ⟨T.mem_edgeFinset.mpr huv, ?_⟩, hnone⟩
-      intro h
-      exact hu (h u (Sym2.mem_mk_left _ _))
+    have he : s(u, v) ∈ Eout := Finset.mem_filter.mpr ⟨T.mem_edgeFinset.mpr huv, hnone⟩
     rcases Sym2.mem_iff.mp (Sym2.out_fst_mem s(u, v)) with h | h
     · exact Or.inl (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨_, he, h⟩))
     · exact Or.inr (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨_, he, h⟩))

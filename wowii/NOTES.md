@@ -1,6 +1,7 @@
 # Graffiti-type graph conjectures: notes
 
-Status: **WOWII Conjectures 178 and 372 are proved and verified in Lean** (`OpenProblem/WOWII178.lean`, `OpenProblem/WOWII372.lean`).
+Status: **WOWII Conjectures 178, 348 and 372 are proved and verified in Lean** (`OpenProblem/WOWII178.lean`,
+`OpenProblem/WOWII348.lean`, `OpenProblem/WOWII372.lean`).
 The other conjectures below are still open. For them we record evidence and partial results only.
 
 Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the JSON
@@ -38,6 +39,42 @@ spanning tree `T`. In any tree, the degree sum `∑ deg = 2n - 2` gives
 depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. Its definitions of
 `L_s` (spanning trees), `b` and `λ` mirror those in formal-conjectures
 (`SimpleGraph.Ls`, `largestInducedBipartiteSubgraphSize`, `indepNeighborsCard`).
+
+## WOWII 348: proved
+
+> If `T` is a tree on `n > 2` vertices, then `γ_t(T) ≥ (2/3) |N(D_2(T)) - D_2(T)|`, where
+> `D_2 = {v | deg(v) = 2}`.
+
+Here `X = N(D_2) - D_2` is the set of vertices whose degree is not 2 but which have a neighbour of
+degree 2. WOWII lists this conjecture as open (dated February 2009). Its neighbours 347, 349 and 350
+were proved by Hongxing Jiang in 2012.
+
+We prove the stronger bound `3 γ_t(T) ≥ 2|X| + 2`. It is sharp, for example for a star with one
+subdivided edge. The proof starts from a total dominating set `S`.
+
+- **Edge count.** At most `|S|/2 - 1` edges avoid `S`. This is the same count as in the WOWII 372
+  proof.
+- **Injection.** `X` injects into `S` plus the edges avoiding `S`:
+  - `x ∈ S` maps to itself;
+  - otherwise, if `x` has a degree-2 neighbour `d ∉ S`, it maps to the edge `xd`;
+  - otherwise, `x` maps to a degree-2 neighbour, which lies in `S`.
+
+  Two vertices outside `S` cannot share a degree-2 neighbour `d`, since `d` would then have no
+  neighbour in `S`. Vertices of `X` do not have degree 2, so the three kinds of image cannot
+  collide.
+
+Together these give `|X| ≤ |S| + |S|/2 - 1`. The computed minimum of `3 γ_t - 2|X|` over all trees
+with 3 to 20 vertices is exactly 2 (`experiments/t348.cpp`). The largest ratio `|X| / γ_t` found up
+to 19 vertices is `7/6`.
+
+The cruder route through `γ_t ≥ (2/3)(v_c + 1)` fails, because `|X| ≤ v_c + 1` is false from 14
+vertices on.
+
+**Formalization.** `OpenProblem/WOWII348.lean` contains two theorems.
+`WOWII348.conjecture348` gives `2|X| + 2 ≤ 3 γ_t` for trees on at least two vertices.
+`conjecture348_real` is the stated real inequality. Both use Mathlib only and depend only on the
+axioms `propext`, `Classical.choice` and `Quot.sound`. The edge count is shared with the 372 proof as
+`WOWII372.card_noneIn_le`.
 
 ## WOWII 372: proved
 
