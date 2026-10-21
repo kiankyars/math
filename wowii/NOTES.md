@@ -714,10 +714,15 @@ For the incidence graph of a balanced 3-SAT formula (3 literals per clause, each
 ### Further untouched WOWII conjectures
 
 These were tested with standard invariant readings (`test1.cpp`, `big.cpp`): 84, 161, 165, 174,
-179 (since proved), 199, 247, 255, 256, 281, 300, 384b, 387, 392b, 392c, 394, 422a, 422b, 422c, 426 and 434e.
+179, 199, 247, 255, 256, 281, 300, 384b, 387, 392b, 392c, 394, 422a, 422b, 422c, 426 and 434e.
 None failed on about 143,000 random graphs with 10–15 vertices. All but 161, 165, 255, 256, 281,
 300 and 434e were also checked on every connected graph with at most 10 vertices (11,716,571
 graphs at `n = 10`); those seven were checked exhaustively up to 9 vertices.
+
+Since then, 161 and 179 have been proved, and 281 and 300 have been refuted by targeted
+simulated annealing (counterexamples on 13 and 12 vertices) that random sampling had missed. For
+84, 165, 166, 174, 177, 180, 183, 185, 255, 256, 268, 232, 233, 382c, 382d, 384b, 387, 392b–f,
+299, 302 and 304, annealing found nothing (`experiments/saLb.cpp`, `experiments/sagt.cpp`).
 
 - Other tree conjectures of this batch were tested with all trees up to 17 vertices and 20,000
   random trees with at most 60 vertices (`experiments/trees_battery.cpp`):
