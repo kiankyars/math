@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 161, 162, 169, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 96, 161, 162, 169, 178, 241, 310, 318, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -245,6 +245,29 @@ this conjecture as open (August 2005).
 
 **Formalization.** `WOWII162.conjecture162` in `OpenProblem/WOWII162.lean` depends only on the
 standard axioms. The general lemma is `card_le_Ls_of_simplicial`.
+
+## WOWII 310: proved
+
+> If `G` is a simple connected graph with `n > 2`, then `γ_t(G) ≤ ⌈1 + Tdist_min / 3⌉`.
+
+Here `Tdist(v) = ∑_u d(v, u)`. WOWII lists this conjecture as open.
+
+We prove `3 γ_t ≤ Tdist(v) + 5` for **every** vertex `v`, which is equivalent to
+`γ_t ≤ 1 + ⌈Tdist(v) / 3⌉`.
+
+**Proof.**
+
+- If `v` is adjacent to all other vertices, `{v, w}` for any neighbour `w` is a total dominating
+  set, and `Tdist(v) = n − 1 ≥ 1`.
+- Otherwise some vertex is at distance exactly 2. Let `A`, `B`, `C` be the vertices at distance
+  `1`, `2` and `≥ 3` from `v`. Give each vertex of `B ∪ C` a parent one step closer to `v`.
+  - `{v} ∪ parents` is a total dominating set: `v` is dominated by the parent of a vertex of
+    `B`, `A` by `v`, and `B ∪ C` by their parents.
+  - The parents of `B` lie in `A`, so there are at most `min(|A|, |B|) + |C|` parents. This is
+    at most `(|A| + 2|B| + 3|C|) / 3 ≤ Tdist(v) / 3`.
+
+**Formalization.** `WOWII310.conjecture310` (with `three_mul_totalDomNum_le` for every vertex) in
+`OpenProblem/WOWII310.lean` depends only on the standard axioms.
 
 ## WOWII 169: proved
 
