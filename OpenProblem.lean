@@ -17,3 +17,4 @@ import OpenProblem.WOWII169
 import OpenProblem.WOWII161
 import OpenProblem.WOWII162
 import OpenProblem.WOWII310
+import OpenProblem.WOWII267

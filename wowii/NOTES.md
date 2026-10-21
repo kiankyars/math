@@ -3,11 +3,11 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 241, 310, 318, 320, 326, 348, 372, 377 and 380.
-- **Refuted:** WOWII 358, 359 and 378.
+- **Refuted:** WOWII 267, 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII267.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -268,6 +268,45 @@ We prove `3 γ_t ≤ Tdist(v) + 5` for **every** vertex `v`, which is equivalent
 
 **Formalization.** `WOWII310.conjecture310` (with `three_mul_totalDomNum_le` for every vertex) in
 `OpenProblem/WOWII310.lean` depends only on the standard axioms.
+
+## WOWII 267: false
+
+> If `G` is a simple connected graph with `girth(G) ≥ 5`, then `γ_t(G) ≥ ⌈dist_avg(A, V)⌉`,
+> where `A` is the set of minimum degree vertices.
+
+WOWII lists this conjecture as open. We read `dist_avg(A, V)` as the mean of `d(a, v)` over
+`a ∈ A` and `v ∈ V`, either including the zero terms `v = a` or excluding them.
+
+**Trees.** Trees already violate the conjecture if they count as having girth `∞`. The double
+star with 3 and 4 leaves (`H???F?^`) has `γ_t = 2` but `dist_avg(A, V) = 43/21`. Trees are the
+only violations with at most 13 vertices among graphs of girth at least 5
+(`experiments/t302.cpp`).
+
+**A cyclic counterexample.** Mathlib's `girth` is `0` for acyclic graphs, and under that
+convention trees are excluded. The graph `G22` settles both conventions:
+
+- the path `0 – 1 – 2 – 3 – 4 – 5`;
+- the path `1 – 6 – 7 – 4`, which closes a 6-cycle without shortening any distance;
+- seven leaves at `0` and seven leaves at `5`.
+
+Its girth is 6, and `{0, 1, 4, 5}` is a total dominating set, so `γ_t ≤ 4`. The minimum degree
+vertices are the 14 leaves, and the distances from each leaf sum to 89. So `dist_avg(A, V)` is
+`1246/308 ≈ 4.05` including zero terms, or `1246/294 ≈ 4.24` excluding them. Either way its
+ceiling is 5 > 4. This is the double broom with path length 5 and leaf count `k = 7`, the
+smallest `k` that works (`experiments/c267.py`). The extra path is placed where the total
+dominating set already dominates it.
+
+**Formalization.** `OpenProblem/WOWII267.lean` contains four theorems, all depending only on the
+standard axioms:
+
+- `not_conjecture267`: girth in Mathlib's sense, mean including `v = a`;
+- `not_conjecture267_pos`: girth in Mathlib's sense, mean over `v ≠ a`;
+- `not_conjecture267_egirth`: Mathlib's `egirth` (trees allowed), mean including `v = a`;
+- `not_conjecture267_egirth_pos`: `egirth`, mean over `v ≠ a`.
+
+Distances are bounded below by functions that grow by at most one along each edge
+(`le_add_dist`). Girth at least 5 follows from the absence of triangles and of two vertices with
+two common neighbours (`five_le_egirth`).
 
 ## WOWII 169: proved
 
@@ -594,6 +633,11 @@ graphs at `n = 10`); those seven were checked exhaustively up to 9 vertices.
   graphs up to 9 vertices. Both have many equality cases, such as `C5` with pendants at one
   vertex. A targeted search of 20,000 spiders with mixed-parity legs plus vertices closing
   5-cycles found no counterexample to 174.
+- The total domination bounds 232, 233 and 235 (with `ecc(B)` read as `max_v d(v, B)` for `B` the
+  periphery or the boundary), 268 and 269 (pairwise mean distance of the centre), 281, 287, 290,
+  298, 299, 300, 302, 304 and 305 hold for all connected graphs up to 9 vertices
+  (`experiments/t302.cpp`). For 298, `χ_C4` is the indicator of being C4-free, as in 133: with
+  the opposite reading, the conjecture fails on `C3`, `C5`, `C6`, `C7` and `P6`.
 - The Hamiltonian-path conditions 189, 190 and 213 hold for all connected graphs up to 9
   vertices. For 189 this uses `dist_even(v)` counting `v` itself; the other reading already fails
   on `K_{1,3}`.
