@@ -2,13 +2,13 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 161, 162, 169, 178, 241, 310, 318, 320, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 267, 281, 300, 358, 359, 378 and 382b (the last only by `K_3`; see its
   section).
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -383,6 +383,27 @@ Among connected graphs with at most 9 vertices, `K_3` is the only counterexample
 **Formalization.** `WOWII382b.not_conjecture382b` in `OpenProblem/WOWII382b.lean` depends only on
 the standard axioms.
 
+## WOWII 179: proved
+
+> If `G` is a simple connected graph on at least 2 vertices, then
+> `L_s(G) + b(G) ≥ Δ(G) + γ(G) + max λ(v)`.
+
+WOWII lists this conjecture as open (August 2005).
+
+**Proof.** The conjecture follows from two inequalities, each sharp for stars.
+
+- `L_s ≥ Δ`, since a spanning tree containing every edge at a vertex `x` has at least `deg x`
+  leaves.
+- `b ≥ γ + λ(u)` for every vertex `u`. Let `J ⊆ N(u)` be independent with `|J| = λ(u)`, and let
+  `I` be a maximal independent set of `G − J` containing `u`.
+  - `I` dominates `G`: `u ∈ I` dominates `J`, and maximality handles the rest.
+  - `I ∪ J` is a union of two disjoint independent sets, so it induces a bipartite subgraph.
+
+  Hence `b ≥ |I| + |J| ≥ γ + λ(u)`.
+
+**Formalization.** `WOWII179.conjecture179` in `OpenProblem/WOWII179.lean` depends only on the
+standard axioms. The bound on `b` is `domNum_add_le_b`.
+
 ## WOWII 169: proved
 
 > If `G` is a simple connected graph, then
@@ -693,7 +714,7 @@ For the incidence graph of a balanced 3-SAT formula (3 literals per clause, each
 ### Further untouched WOWII conjectures
 
 These were tested with standard invariant readings (`test1.cpp`, `big.cpp`): 84, 161, 165, 174,
-179, 199, 247, 255, 256, 281, 300, 384b, 387, 392b, 392c, 394, 422a, 422b, 422c, 426 and 434e.
+179 (since proved), 199, 247, 255, 256, 281, 300, 384b, 387, 392b, 392c, 394, 422a, 422b, 422c, 426 and 434e.
 None failed on about 143,000 random graphs with 10–15 vertices. All but 161, 165, 255, 256, 281,
 300 and 434e were also checked on every connected graph with at most 10 vertices (11,716,571
 graphs at `n = 10`); those seven were checked exhaustively up to 9 vertices.
