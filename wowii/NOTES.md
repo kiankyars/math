@@ -1166,6 +1166,39 @@ A related construction holds up to 9 vertices: a set `X` of vertices pairwise at
 `|X| ≥ ⌈D/3⌉` and `|X| + α(G − X) ≥ res + ⌈D/3⌉`. Note that `X ∪ J` is an induced forest for
 every independent `J`. The residue-only version of this construction fails twice at 9 vertices.
 
+### Examined but not resolved (October 2026, second pass)
+
+These conjectures have no tracker activity. Each was tested with exact branch-and-bound
+invariants (`experiments/sa11.cpp` to `sa16.cpp`) and left open for the reason given.
+
+- **Holds in every test, no proof found:**
+  - 61 (`f ≥ res + ⌈diam/3⌉`): annealing up to 24 vertices, with growing slack (`sa61.cpp`).
+  - 323: well totally dominated when the hypothesis holds, with the horizontal-edge count read as
+    in formal-conjectures' 309. The hypothesis holds for few graphs: complete bipartite graphs and
+    their supergraphs with edges inside the parts.
+  - 448a, with `ρ` the path cover number: tight up to 14 vertices.
+  - 450, with `p N(X)` the path cover number of `G[N(X)]`: up to 14 vertices.
+  - The bipartite part of 412f (`|H| ≥ c(G[V - N(P)]) + μ(G[V - N(P)])`, with `H` the union of
+    maximum critical independent sets): all bipartite graphs up to 10 vertices, and bipartite
+    annealing up to 18. It is tight throughout.
+  - 434d and 434e: these follow from `i ≤ SW(Ḡ)` unless the component count or `ecc(C)` exceeds
+    `2`. A path argument handles `ecc(C) ≤ 4`, but not beyond.
+  - The Hamiltonian-path conditions 189, 190, 199 and 213, and 177, 384b and 418b, up to
+    15 vertices (`sa14.cpp`).
+- **Fails on tiny graphs under the natural reading (likely transcription problems):**
+  - the general part of 412f, which fails on `K_4` because its only critical independent set is
+    empty;
+  - 398, which fails on 5 vertices;
+  - 446, and 448a with `ρ` the longest induced path, which fail on 6 vertices;
+  - 448b under both readings of `ρ`.
+- **Undefined or ambiguous invariants:**
+  - 66 (`even_mode_min`), 154 and 155 ("radial circles"), 157 (`f_1`, `R(v)`) and 171;
+  - 341 (`σ(T)`) and 369;
+  - 382e (Maxine), 389a (quartile convention) and 391;
+  - 400c and 401a (disparity), 413a and 413b (`c_L`), 415a–c (`epN`), and 431a and 431b
+    (`peN`);
+  - 427 (`C` and `P` undefined), 432a and 432b, and 443 (disparities).
+
 ### TxGraffiti Conjecture 3 (refuted by others)
 
 *Update (October 2026):* formal-conjectures issue #6737 records a 48-vertex cubic counterexample
