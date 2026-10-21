@@ -3,7 +3,8 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 321, 323, 325, 326, 348,
-  361, 372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449.
+  361, 372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449. (For 361 the tracker cites an
+  informal manuscript proof; see its section.)
 - **Refuted:** WOWII 255, 256, 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402,
   422b, 425d, 425e, 427, 439, 442 and 444. (427 leaves `C` undefined; one tree refutes both
   readings, `C` the centre and `C = M`.)
@@ -1439,8 +1440,10 @@ The bound is tight, for example on stars and on spiders with legs of length 2. A
 18 vertices were checked first (`experiments/t361.cpp`, which also checks 376).
 
 Tracker: PR google-deepmind/formal-conjectures#7377 (October 15, 2026) adds the statement with
-`sorry`, including a variant for `n > 1`. Our theorem covers that variant too. No proof appears
-on the tracker.
+`sorry`, including a variant for `n > 1`. It cites an undated manuscript, "A Support–Center Lower
+Bound for Total Domination in Trees", whose argument we have not seen. So 361 may already have an
+informal proof, and what we add is a complete Lean proof found independently. Our theorem also
+covers the `n > 1` variant.
 
 **Formalization.** `WOWII361.conjecture361` in `OpenProblem/WOWII361.lean` covers all trees with
 at least two vertices. It depends only on the standard axioms.
