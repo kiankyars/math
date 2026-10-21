@@ -183,6 +183,11 @@ occurring degree" is read.
 - **Ties allowed: false.** The 12-vertex tree `K????B?KCWKW` has five leaves, five vertices of
   degree 2, one vertex of degree 3 and one of degree 4. So `dd = 4`, but `γ_t = 5 < 16/3`.
 
+*Later activity elsewhere (October 21, 2026):* after this work was committed, formal-conjectures
+issue #7509 (J. J. Gebendorfer) reached the same split. It refutes the tied-mode reading with
+`P_4` (degrees `1, 2, 2, 1`) and gives a written proof of a stronger bound for the unique-mode
+reading. Its positive part is not formalized; ours is in Lean.
+
 **Proof (strict mode).** Let `S` be a total dominating set and `m` the number of distinct degrees
 that are at least 3. The proof combines two counts.
 
@@ -1147,7 +1152,12 @@ A related construction holds up to 9 vertices: a set `X` of vertices pairwise at
 `|X| ≥ ⌈D/3⌉` and `|X| + α(G − X) ≥ res + ⌈D/3⌉`. Note that `X ∪ J` is an induced forest for
 every independent `J`. The residue-only version of this construction fails twice at 9 vertices.
 
-### TxGraffiti Conjecture 3 (open)
+### TxGraffiti Conjecture 3 (refuted by others)
+
+*Update (October 2026):* formal-conjectures issue #6737 records a 48-vertex cubic counterexample
+with `i = 16 > μ* = 15`, and an earlier 50-vertex one. This is consistent with the searches below,
+which stop at 20 vertices for cubic graphs. We make no claim about this conjecture.
+
 
 The statement is `i(G) ≤ μ*(G) = γ_e(G)` for every regular `G`.
 
