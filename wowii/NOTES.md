@@ -4,13 +4,13 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380 and
   449.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 442 and 382b (the last only by `K_3`; see its
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 442, 444 and 382b (the last only by `K_3`; see its
   section).
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII442.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -447,6 +447,25 @@ up to 9 vertices (`experiments/t449.cpp`, which also checks 444 and 449).
 
 **Formalization.** `OpenProblem/WOWII442.lean` contains `not_conjecture442` (vertices) and
 `not_conjecture442_length` (edges). Both depend only on the standard axioms.
+
+## WOWII 444: false
+
+> Let `G` be a connected graph on `n > 3` vertices. Then `α_2(G) ≤ n − ⌊dd(K_4(v))/2⌋`, where
+> `dd(K_4(v))` is the number of distinct values of the number of `K_4` containing a vertex.
+
+WOWII lists this conjecture as open (January 2012).
+
+**Counterexample.** `G11` has 11 vertices and 28 edges and was found by simulated annealing
+(`experiments/sa444.cpp`). The numbers of `K_4` at its vertices are 13, 12, 10, 5, 2, 9, 1, 4, 1,
+7 and 0. That gives ten distinct values, so the bound is `11 − 5 = 6`. But
+`{3, 4, 6, 7, 8, 9, 10}` induces a single edge, so `α_2 ≥ 7`.
+
+The mechanism: a small dense core (here the clique `{0, 1, 2, 5}`) can give many
+2-independent satellites pairwise distinct `K_4` counts. The conjecture holds for all connected
+graphs up to 9 vertices, and annealing finds counterexamples at 11 vertices but not at 10.
+
+**Formalization.** `WOWII444.not_conjecture444` in `OpenProblem/WOWII444.lean` depends only on the
+standard axioms. The `K_4` counts are computed by `decide`.
 
 ## WOWII 169: proved
 
