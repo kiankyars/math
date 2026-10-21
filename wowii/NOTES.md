@@ -3,12 +3,13 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 241, 310, 318, 320, 326, 348, 372, 377 and 380.
-- **Refuted:** WOWII 267, 281, 300, 358, 359 and 378.
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378 and 382b (the last only by `K_3`; see its
+  section).
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -365,6 +366,22 @@ These choices are pairwise distinct.
 
 **Formalization.** `WOWII281.not_conjecture281` in `OpenProblem/WOWII281.lean` depends only on the
 standard axioms.
+
+## WOWII 382b: false as stated (only `K_3`)
+
+> Let `G` be a connected graph on `n > 2` vertices. Then `γ_2 ≤ −1 + α(δ + |A_1|)`, where
+> `A_1` is the set of vertices adjacent to exactly one vertex of non-minimum degree.
+
+The triangle violates it: `γ_2(K_3) = 2`, `α = 1`, `δ = 2` and `A_1 = ∅`, so the right side is
+`1`. The page itself observes that the remaining cases (`δ = 2`, `A_1 = ∅` or `δ = 1`,
+`|A_1| = 1`) need `γ_2 ≤ 2α − 1`, which fails for `K_3`.
+
+Among connected graphs with at most 9 vertices, `K_3` is the only counterexample
+(`experiments/t382.cpp`). So this refutation probably points to a missing hypothesis such as
+`n > 3`, and the version with `n > 3` is still open.
+
+**Formalization.** `WOWII382b.not_conjecture382b` in `OpenProblem/WOWII382b.lean` depends only on
+the standard axioms.
 
 ## WOWII 169: proved
 
