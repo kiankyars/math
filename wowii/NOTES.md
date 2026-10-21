@@ -3,7 +3,7 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
-  426, 434b, 434c and 449.
+  426, 434b, 434c, 435 and 449.
 - **Refuted:** WOWII 267, 281, 300, 328, 399b, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 439,
   442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
@@ -11,7 +11,7 @@ Status, all verified in Lean:
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -788,6 +788,29 @@ was found for:
 - 182, 184 and 186, with `B(G²)` the periphery of `G²` as in formal-conjectures' 181. We tried two
   readings of `Δ(B(G²))`, two of `dist_avg(B(G²), V)` and two of `N(C(G²))`, up to 18 vertices.
 - 431c (`i ≤ residue · |T_max| + dd`), up to 24 vertices.
+
+## WOWII 435: proved
+
+> Let `G` be a connected graph on `n > 3` vertices. Then
+> `α_2(G) ≤ SW(Ḡ) + ⌈(1 + |E(G²[A])|)/3⌉`, where `A` is the set of minimum degree vertices of `G²`.
+
+WOWII lists this conjecture as open (January 2012). It has no activity on the formal-conjectures
+tracker (checked October 2026). Earlier annealing found many equality cases but no counterexample.
+
+**Proof.** We show `α_2(G) ≤ SW(Ḡ) + 1`. The ceiling is at least `1`, both in the printed reading
+and in the reading `⌈1 + |E(G²[A])|/3⌉` (the source's brackets are unbalanced).
+
+- Let `S` be a 2-independent set.
+- Each `x ∈ S` has at most one neighbour in `S`, so in `Ḡ` it is adjacent to at least `|S| - 2`
+  vertices of `S`.
+- So `δ(Ḡ[S]) ≥ |S| - 2`, and `SW(Ḡ) = 1 + max_X δ(Ḡ[X]) ≥ |S| - 1`.
+
+This is the Szekeres–Wilf analogue of the bound `α_k ≤ WP(Ḡ) + k - 1` of DeLaViña and Pepper
+(2012). It is sharper, because `SW ≤ WP`. Connectivity and `n > 3` are not needed.
+
+**Formalization.** `WOWII435.conjecture435` and `WOWII435.conjecture435'` in
+`OpenProblem/WOWII435.lean` depend only on the standard axioms. The key lemma is
+`WOWII435.twoIndepNum_le_SW`.
 
 ## WOWII 169: proved
 
