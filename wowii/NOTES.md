@@ -8,11 +8,13 @@ Status, all verified in Lean:
   425e, 439, 442 and 444.
 - **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
   graphs and stars), which suggests transcription problems; see their sections.
-- **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
-  ties are allowed.
+- **Resolved both ways:**
+  - WOWII 367 is true when degree 2 is a strict mode and false when ties are allowed.
+  - WOWII 434a is true when its undefined `M` is the set of maximum degree vertices, and false
+    when `|M|` is read as the number of pendants (the set `P` that the statement defines).
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -590,9 +592,13 @@ conditions are not needed.
   `G − N[v]` is independent and dominating, so `i(G) ≤ n − Δ`.
 - Taking `X = V` gives `SW(Ḡ) ≥ 1 + δ(Ḡ) = n − Δ`.
 
-The same argument covers 434a, if its `|M|` means the number of maximum degree vertices:
-`i ≤ SW ≤ |M| + 2⌊SW/2⌋`. We do not claim 434a because its statement also mentions an unused set
-`P`. For 434d and 434e, the bounds subtract `c(G[N[B]])` and `ecc(C)` respectively, so the
+**434a** (`i(G) ≤ |M| + 2⌊SW(Ḡ)/2⌋`) defines the set `P` of pendants but uses an undefined
+`M`. It has no activity on the formal-conjectures tracker (checked October 21, 2026).
+
+- With `M` the set of maximum degree vertices, as in 434b and 434c, it holds:
+  `i ≤ SW ≤ 1 + 2⌊SW/2⌋ ≤ |M| + 2⌊SW/2⌋` (`WOWII434.conjecture434a`).
+- With `|M|` read as `|P|`, it fails for `K_4`. There `i = 1`, `P = ∅` and `SW(K̄_4) = 1`, so the
+  bound is `0` (`WOWII434.not_conjecture434a_pendants`). For 434d and 434e, the bounds subtract `c(G[N[B]])` and `ecc(C)` respectively, so the
 argument above is not enough. They hold for all connected graphs up to 9 vertices
 (`experiments/t434.cpp`).
 

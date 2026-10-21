@@ -2,10 +2,13 @@ import OpenProblem.WOWII422b
 import OpenProblem.WOWII318
 
 /-!
-# Written on the Wall II, Conjectures 434b and 434c
+# Written on the Wall II, Conjectures 434a, 434b and 434c
 
 E. DeLaViña's *Written on the Wall II* lists as open:
 
+> **Conjecture 434a.** Let `G` be a connected graph on `n > 3` vertices and `P` the set of
+> pendants of `G`. Then `i(G) ≤ |M| + 2 FLOOR[0.5 SW(G^c)]`.
+>
 > **Conjecture 434b.** Let `G` be a connected graph on `n > 3` vertices and `M` the set of
 > maximum degree vertices of `G`. Then `i(G) ≤ δ(G[M]) + 1 + SW(G^c)`. If diameter `> 2`, then
 > `i(G) ≤ δ(G[M]) + SW(G^c)`.
@@ -17,7 +20,7 @@ E. DeLaViña's *Written on the Wall II* lists as open:
 Here `i` is the independent domination number and `SW(H) = 1 + max_X δ(H[X])` is the
 Szekeres–Wilf number (the degeneracy plus one).
 
-Both conjectures follow from `i(G) ≤ SW(Ḡ)` (`indepDomNum_le_SW`).
+All three follow from `i(G) ≤ SW(Ḡ)` (`indepDomNum_le_SW`).
 
 * Let `v` have maximum degree `Δ`. Then `v`, together with a maximal independent set of
   `G - N[v]`, is an independent dominating set, so `i(G) ≤ n - Δ`.
@@ -25,6 +28,11 @@ Both conjectures follow from `i(G) ≤ SW(Ḡ)` (`indepDomNum_le_SW`).
 
 The extra terms `δ(G[M])`, `δ(G[V - M])` and `+ 1` are nonnegative, and the conditions on the
 diameter and on `δ(G)` are not needed.
+
+The statement of 434a defines `P` but uses `M`, which is not defined. With `M` the set of
+maximum degree vertices, as in 434b and 434c, it holds (`conjecture434a`), because `|M| ≥ 1` and
+`SW ≤ 1 + 2⌊SW/2⌋`. With `|M|` read as the number `|P|` of pendants, it fails for `K_4`, where
+`i = 1` but `|P| = 0` and `SW(K̄_4) = 1` (`not_conjecture434a_pendants`).
 -/
 
 open Finset SimpleGraph
@@ -163,5 +171,67 @@ theorem conjecture434c (G : SimpleGraph V) [Nonempty V] :
   · omega
   · intro _
     omega
+
+/-- **WOWII Conjecture 434a**, with `M` the set of maximum degree vertices. -/
+theorem conjecture434a (G : SimpleGraph V) [Nonempty V] :
+    indepDomNum G ≤ #(maxDegSet G) + 2 * (SW Gᶜ / 2) := by
+  have h1 := indepDomNum_le_SW G
+  have h2 : 1 ≤ #(maxDegSet G) := by
+    obtain ⟨v, hv⟩ := G.exists_maximal_degree_vertex
+    exact card_pos.mpr ⟨v, mem_filter.mpr ⟨mem_univ v, hv.symm⟩⟩
+  omega
+
+/-- A vertex with two neighbours has degree at least two. -/
+lemma two_le_degree (G : SimpleGraph V) {v a b : V} (hab : a ≠ b) (ha : G.Adj v a)
+    (hb : G.Adj v b) : 2 ≤ G.degree v := by
+  rw [← card_neighborFinset_eq_degree, ← card_pair hab]
+  apply card_le_card
+  intro x hx
+  rw [mem_insert, mem_singleton] at hx
+  rcases hx with rfl | rfl
+  · exact (mem_neighborFinset _ _ _).mpr ha
+  · exact (mem_neighborFinset _ _ _).mpr hb
+
+/-- The pendant vertices. -/
+def pendants (G : SimpleGraph V) : Finset V := univ.filter fun v => G.degree v = 1
+
+omit [Fintype V] in
+/-- The Szekeres–Wilf number of an edgeless graph is `1`. -/
+lemma SW_bot [Nonempty V] : SW (⊥ : SimpleGraph V) = 1 := by
+  obtain ⟨v⟩ := ‹Nonempty V›
+  unfold SW
+  rw [add_eq_left]
+  refine le_antisymm (csSup_le ⟨0, {v}, singleton_nonempty v, fun _ _ => Nat.zero_le _⟩ ?_)
+    (Nat.zero_le _)
+  rintro d ⟨X, ⟨x, hx⟩, hd⟩
+  simpa using hd x hx
+
+/-- Reading `|M|` in 434a as the number of pendants gives a false statement: `K_4`. -/
+theorem not_conjecture434a_pendants :
+    ¬ ∀ (V : Type) [Fintype V] (G : SimpleGraph V), G.Connected → 3 < Fintype.card V →
+      indepDomNum G ≤ #(pendants G) + 2 * (SW Gᶜ / 2) := by
+  intro h
+  have h4 := h (Fin 4) ⊤ connected_top (by simp)
+  have hP : pendants (⊤ : SimpleGraph (Fin 4)) = ∅ := by
+    ext v
+    simp only [pendants, mem_filter, mem_univ, true_and, notMem_empty, iff_false]
+    have key : ∀ v : Fin 4, ∃ a b : Fin 4, a ≠ b ∧ a ≠ v ∧ b ≠ v := by decide
+    obtain ⟨a, b, hab, ha, hb⟩ := key v
+    have := two_le_degree ⊤ hab ((top_adj v a).mpr ha.symm) ((top_adj v b).mpr hb.symm)
+    omega
+  have hi : 1 ≤ indepDomNum (⊤ : SimpleGraph (Fin 4)) := by
+    refine le_csInf ⟨1, {0}, fun v => ?_, fun x hx y hy => ?_, rfl⟩ ?_
+    · by_cases hv : v = 0
+      · exact Or.inl (by simp [hv])
+      · exact Or.inr ⟨0, mem_singleton_self 0, (top_adj v 0).mpr hv⟩
+    · simp only [mem_singleton] at hx hy
+      simp [hx, hy]
+    · rintro k ⟨S, hS, -, rfl⟩
+      obtain h0 | ⟨u, hu, -⟩ := hS 0
+      · exact card_pos.mpr ⟨0, h0⟩
+      · exact card_pos.mpr ⟨u, hu⟩
+  rw [hP, compl_top, SW_bot] at h4
+  simp at h4
+  omega
 
 end WOWII434
