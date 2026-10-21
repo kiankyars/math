@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 178, 241, 318, 320, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 96, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -202,6 +202,33 @@ gives `3γ_t ≥ 4(m + 2) ≥ 4 dd`.
 - `not_conjecture367_ties`: the tie-allowing reading is false, checked on the 12-vertex tree.
 
 All three depend only on the standard axioms.
+
+## WOWII 96: proved
+
+> If `G` is a simple connected graph, then
+> `α(G) ≤ 1 + minimum dist_even(v) · (maximum of λ(v) − 1)`.
+
+Here `dist_even(v)` counts the vertices at even distance from `v` (including `v`), and
+`λ(v) = α(G[N(v)])`. WOWII lists this conjecture as open (dated April 2004).
+
+We prove the stronger statement that `α(G) ≤ 1 + dist_even(v)(λ_max − 1)` for **every** vertex
+`v`.
+
+**Proof.** Fix `v`, a maximum independent set `I`, and the BFS layers from `v`. Each vertex of `I`
+in an odd layer has a neighbour in the previous layer, which is even; map it there. Let `w` be an
+even vertex.
+
+- If `w ∈ I`, nothing maps to `w`.
+- If `w ∉ I` and `w ≠ v`, the vertices mapped to `w` lie two layers below `w`'s own neighbour `q`
+  in the previous layer, so they are not adjacent to `q`. Together with `q` they form an
+  independent subset of `N(w)`, so at most `λ(w) − 1` vertices map to `w`.
+- The root `v` receives at most `λ(v)`.
+
+Summing over the even vertices gives `|I| ≤ λ_max + (dist_even(v) − 1)(λ_max − 1)`. If
+`λ_max = 1`, then `G` is complete. Equality holds for stars, using `v` = the centre.
+
+**Formalization.** `OpenProblem/WOWII96.lean` contains `WOWII96.indepNum_le` (the every-vertex
+form) and `conjecture96`. Both depend only on the standard axioms.
 
 ## WOWII 326: proved
 
