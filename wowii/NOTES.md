@@ -4,14 +4,14 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
   426, 434b, 434c and 449.
-- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 439,
+- **Refuted:** WOWII 267, 281, 300, 328, 399b, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 439,
   442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -734,6 +734,46 @@ vertices, and annealing finds none on 11 to 14.
 
 **Formalization.** `WOWII439.not_conjecture439` in `OpenProblem/WOWII439.lean` depends only on the
 standard axioms.
+
+## WOWII 399b: false
+
+> If `G` is a connected graph on `n > 2` vertices, then `γ_2 ≤ WP(Ḡ) + ⌊3/α(G[A_3])⌋`, where
+> `A_3` is the set of vertices of degree at least three.
+
+`WP(H) = max_i min(d_i + 1, i)` is the Welsh–Powell number of `H`, with degrees in nonincreasing
+order. WOWII lists this conjecture as open. It has no activity on the formal-conjectures tracker
+(checked October 2026).
+
+**Counterexample.** `experiments/sa11.cpp` found it, using branch and bound for `γ_2`, and
+`experiments/v399b.py` verifies it by brute force. Vertices `4, …, 11` form a `K_8`, and the
+independent vertices `0, 1, 2, 3` are attached by
+
+  `N(0) = {4, 10}`, `N(1) = {5, 8, 11}`, `N(2) = {9, 10, 11}`, `N(3) = {6, 7, 11}`.
+
+The checks:
+
+- Only `0, 1, 2, 3` have at least four non-neighbours, so `WP(Ḡ) = 4`.
+- `{1, 2, 3, 4} ⊆ A_3` is independent, so `⌊3/α(G[A_3])⌋ = 0`.
+- `γ_2 = 5`: `{0, 1, 2, 3, 4}` 2-dominates. A vertex of `0, 1, 2, 3` outside a 2-dominating set
+  needs two neighbours inside it, and no two of the sets `N(i)` share two vertices. So four vertices
+  never suffice.
+
+So the bound is `4 < 5`. An exhaustive search finds no counterexample on 9 or fewer vertices.
+
+**Formalization.** `WOWII399b.not_conjecture399b` in `OpenProblem/WOWII399b.lean` depends only on
+the standard axioms. `WP` is defined without sorting: it is the largest `k` such that at least `k`
+vertices have degree at least `k - 1`, which equals `max_i min(d_i + 1, i)`.
+
+**Related search.** In the same run, annealing up to 20 vertices found nothing for:
+
+- `γ_2`: 382c, 382d, 387, 392b–f, 395a and 399c;
+- `i`: 418c, 421b, 421c, 422a, 422c, 434d and 434e;
+- `α_2`: 435 and 438a;
+- `γ_t`: 232, 233, 255, 256, 299, 302 and 304.
+
+For 298 (`γ_t ≤ a(G) + χ_{C_4}(G)`) it found 12-vertex trees with `γ_t = a + 1`. These are the
+extremal trees of Desormeaux, Haynes and Henning (2013), who proved `γ_t(T) ≤ a(T) + 1` for trees
+and characterized equality. So 298 is already settled by the literature, and we do not claim it.
 
 ## WOWII 169: proved
 
