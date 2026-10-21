@@ -6,15 +6,16 @@ Status, all verified in Lean:
   372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449.
 - **Refuted:** WOWII 255, 256, 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402,
   422b, 425d, 425e, 439, 442 and 444.
-- **False as stated:** WOWII 382b, 399a, 401b and 412f. These fail on very small graphs (`K_3`,
-  complete graphs and stars), which suggests transcription problems; see their sections.
+- **False as stated:** WOWII 382b, 391, 399a, 401b and 412f. These fail on very small graphs
+  (`K_3`, complete graphs, stars and a 5-vertex spider), which suggests transcription problems;
+  see their sections.
 - **Resolved both ways:**
   - WOWII 367 is true when degree 2 is a strict mode and false when ties are allowed.
   - WOWII 434a is true when its undefined `M` is the set of maximum degree vertices, and false
     when `|M|` is read as the number of pendants (the set `P` that the statement defines).
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII255.lean`, `WOWII256.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII412f.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII391.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII412f.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -713,6 +714,27 @@ them (`experiments/t438a.py`).
 **Formalization.** `WOWII438a.conjecture438a` in `OpenProblem/WOWII438a.lean` depends only on the
 standard axioms. Our `annihilation` maximises over vertex sets, which is equivalent to
 formal-conjectures' definition by sub-multisets of the degree multiset.
+
+## WOWII 391: false as stated
+
+> If `G` is a connected graph on `n > 2` vertices, then `γ_2 ≤ p(G) + 1 + μ(G[T]) + |E(G[A_3])|`,
+> where `T` is the set of vertices of degree two and `A_3` the set of vertices of degree at least
+> three.
+
+The transcription tags `p(G)` as the path cover number, as in 372, 407 and 418b. Take the spider
+with legs of lengths 1, 1, 2 (5 vertices).
+
+- The three leaves lie in every 2-dominating set, and the degree-2 vertex forces one more vertex,
+  so `γ_2 = 4`.
+- On the other side, `p = 2`, `T` is a single vertex and `A_3` is a single vertex, so the bound is
+  `3`.
+
+Reading `p(G)` as the number of pendants, the bound still fails on 561 connected graphs up to 9
+vertices, the first on 8 vertices (`G?Bcr_`). It has no activity on the formal-conjectures tracker
+(checked October 21, 2026). A failure on 5 vertices points to a transcription problem.
+
+**Formalization.** `WOWII391.not_conjecture391` in `OpenProblem/WOWII391.lean` depends only on
+the standard axioms.
 
 ## WOWII 393d: false
 
@@ -1455,7 +1477,7 @@ invariants (`experiments/sa11.cpp` to `sa16.cpp`) and left open for the reason g
 - **Undefined or ambiguous invariants:**
   - 66 (`even_mode_min`), 154 and 155 ("radial circles"), 157 (`f_1`, `R(v)`) and 171;
   - 341 (`σ(T)`) and 369;
-  - 382e (Maxine), 389a (quartile convention) and 391;
+  - 382e (Maxine) and 389a (quartile convention). (391 is now shown false as stated.)
   - 400c and 401a (disparity), 413a and 413b (`c_L`), 415a–c (`epN`), and 431a and 431b
     (`peN`);
   - 427 (`C` and `P` undefined), 432a and 432b, and 443 (disparities).
