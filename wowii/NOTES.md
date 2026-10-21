@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 178, 241, 320, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 178, 241, 318, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII178.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -246,8 +246,32 @@ The two sides are bounded on either side of `n − 1`:
 So equality forces a universal vertex and a leaf. The leaf's neighbour is universal and lies in
 every total dominating set, so every minimal total dominating set has exactly two vertices.
 
-The related conjectures 318, 319, 321, 324, 325 and 328 also hold for all connected graphs up to 9
-vertices. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices, so it
+**WOWII 318 is also proved** (`OpenProblem/WOWII318.lean`).
+
+> If `maximum dist_even(v) ≥ |E(Ḡ)|`, then `G` is well totally dominated.
+
+Since `dist_even(v) ≤ 1 + deg_Ḡ(v)`, the hypothesis gives a vertex `x` such that all
+non-adjacent pairs except at most one contain `x`. A minimal total dominating set `S` contains a
+neighbour `z` of `x`.
+
+- If `z` is universal, then `z` with any neighbour of `z` in `S` is a total dominating set.
+- Otherwise `z` has a single non-neighbour `b`, and `z` with a neighbour of `b` in `S` is a total
+  dominating set.
+
+So every minimal total dominating set has two vertices. Connectivity is not needed.
+
+The related conjectures 319, 321, 324, 325 and 328 also hold for all connected graphs up to 9
+vertices.
+
+For 319 we have a partial result: the vertices at even distance from any `v` form a dominating set.
+Hence `γ ≤ min_v dist_even(v)`, and the hypothesis `max dist_even = γ` makes every such set a
+minimum dominating set. The graphs satisfying this hypothesis include:
+
+- the complete graphs;
+- every corona `H ∘ K₁`;
+- `C₄`, `C₇` and `K_{2,2,2}`.
+
+So we have not found a characterization. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices, so it
 reduces to a finite check, but we have not formalized that check.
 
 ## WOWII 358 and 359: false
