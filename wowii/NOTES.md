@@ -3,7 +3,8 @@
 Status: **WOWII Conjectures 178, 348, 372 and 377 are proved and verified in Lean**
 (`OpenProblem/WOWII178.lean`, `OpenProblem/WOWII348.lean`, `OpenProblem/WOWII372.lean`,
 `OpenProblem/WOWII377.lean`). **WOWII Conjecture 378 is refuted in Lean**
-(`OpenProblem/WOWII378.lean`).
+(`OpenProblem/WOWII378.lean`), and **WOWII Conjecture 367 is resolved in Lean** (true with a strict
+mode, false with ties; `OpenProblem/WOWII367.lean`).
 The other conjectures below are still open. For them we record evidence and partial results only.
 
 Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the JSON
@@ -159,6 +160,43 @@ the following facts about a concrete tree:
 
 All four theorems depend only on the standard axioms.
 
+## WOWII 367: resolved
+
+> If `T` is a tree on `n > 2` vertices such that the most frequently occurring degree is two, then
+> `γ_t(T) ≥ (4/3) dd(T)`.
+
+Here `dd` is the number of distinct degrees. The answer depends on how "the most frequently
+occurring degree" is read.
+
+- **Strict mode: true.** If degree 2 occurs strictly more often than every other degree, the bound
+  holds. We prove `4 dd(T) ≤ 3 γ_t(T)` assuming only that there are more vertices of degree 2 than
+  leaves.
+- **Ties allowed: false.** The 12-vertex tree `K????B?KCWKW` has five leaves, five vertices of
+  degree 2, one vertex of degree 3 and one of degree 4. So `dd = 4`, but `γ_t = 5 < 16/3`.
+
+**Proof (strict mode).** Let `S` be a total dominating set and `m` the number of distinct degrees
+that are at least 3. The proof combines two counts.
+
+- **Edge count.** Take one edge from each vertex of `S` to `S`; these give at least `⌈|S|/2⌉`
+  edges. Take one edge from each vertex outside `S` to `S`. Take a second edge at each non-leaf
+  outside `S`; each such edge is counted at most twice. These edges are distinct, so
+  `#non-leaves + 2 ≤ |S| + 2⌊|S|/2⌋`. This refines the Chellali–Haynes bound
+  `γ_t ≥ (n − ℓ + 2)/2` when `|S|` is odd, and the case of four distinct degrees needs that
+  refinement.
+- **Leaf count.** The degree sum gives `ℓ = 2 + ∑_{deg v ≥ 3} (deg v − 2)`. The `m` distinct
+  degrees that are at least 3 contribute at least `1 + 2 + ... + m`.
+
+Since `n₂ > ℓ`, we get `#non-leaves ≥ 3 + m + m(m+1)/2`. Comparing this with the edge count
+gives `3γ_t ≥ 4(m + 2) ≥ 4 dd`.
+
+**Formalization.** `OpenProblem/WOWII367.lean` contains three theorems:
+
+- `conjecture367`: `4 dd ≤ 3 γ_t` when `n₁ < n₂`;
+- `conjecture367_real`: the stated real form, with the strict-mode hypothesis;
+- `not_conjecture367_ties`: the tie-allowing reading is false, checked on the 12-vertex tree.
+
+All three depend only on the standard axioms.
+
 ## WOWII 372: proved
 
 > If `T` is a tree on `n > 2` vertices, then `γ_t(T) ≥ v_c(T) / (p(T) - 1)`.
@@ -196,9 +234,6 @@ convention `x / 0 = 0`. Both use Mathlib only and depend only on the axioms `pro
 `Classical.choice` and `Quot.sound`. The path cover definition is copied from formal-conjectures
 (`IsPathCover`).
 
-WOWII 367 (`γ_t ≥ (4/3)·dd(T)` for trees whose most frequent degree is 2, where `dd` is the number
-of distinct degrees) also holds for all trees up to 23 vertices when "most frequent" means a strict
-mode. With ties allowed, it fails at 12 vertices, for example on the graph6 tree `K????B?KCWKW`.
 
 ## Other targets examined (still open)
 
