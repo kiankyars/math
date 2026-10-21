@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 161, 169, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 96, 161, 162, 169, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -218,6 +218,33 @@ it extends to a spanning tree `T`. The degree sum `∑ deg_T = 2n − 2` gives
 
 **Formalization.** `WOWII161.conjecture161` in `OpenProblem/WOWII161.lean` (with the helper
 `degree_le_Ls`: `deg x ≤ L_s` for every vertex) depends only on the standard axioms.
+
+## WOWII 162: proved
+
+> If `G` is a simple connected graph, then `L_s(G) ≥ freq of minimum of λ(v) · ⌊1/δ(G)⌋`.
+
+The factor `⌊1/δ⌋` is `1` when `δ = 1` and `0` otherwise. So the content is: if `δ = 1`, then
+`L_s` is at least the number of vertices at which `λ(v) = α(G[N(v)])` is minimal. WOWII lists
+this conjecture as open (August 2005).
+
+**Proof.**
+
+- A vertex of degree one has `λ = 1`, so each minimiser `v` of `λ` has `λ(v) ≤ 1`. Its
+  neighbourhood is then a clique: `v` is simplicial.
+- **Lemma.** If every vertex of `S` is simplicial and has a neighbour outside `S`, then
+  `L_s ≥ |S|`. Attach each `v ∈ S` to one neighbour `p(v) ∉ S`, and keep the edges of `G` with
+  both ends outside `S`. This spanning subgraph `H` is connected. For an edge `ab` of `G`:
+  - with `a ∈ S`, `b ∉ S`, use `a – p(a) – b`, since `p(a)` and `b` are adjacent neighbours of the
+    simplicial vertex `a`;
+  - with both ends in `S`, use `a – p(a)`, then the previous case for `b` and `p(a)`.
+  
+  Every vertex of `S` has degree 1 in `H`, so it is a leaf of any spanning tree of `H`.
+- If some minimiser `v` has all its neighbours among the minimisers, then `N[v]` is closed under
+  adjacency, so `v` is universal. Being simplicial, it makes `G` complete. With `δ = 1` this
+  forces `n = 2`, where both sides equal 2.
+
+**Formalization.** `WOWII162.conjecture162` in `OpenProblem/WOWII162.lean` depends only on the
+standard axioms. The general lemma is `card_le_Ls_of_simplicial`.
 
 ## WOWII 169: proved
 
