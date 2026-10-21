@@ -4,13 +4,13 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
   426, 434b, 434c and 449.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 393d, 394, 402, 422b, 425d, 442, 444, 382b and
-  401b. The last two fail on
+- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 402, 422b, 425d, 442, 444,
+  382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -646,6 +646,39 @@ dominates, so `i(G) = 4`. Because there is no `K_4`, the result does not depend 
 the standard axioms. In the same batch, 418b (with `p(G)` the path cover number) and 418c hold for
 all connected graphs up to 9 vertices, and annealing found nothing for them
 (`experiments/t418.cpp`).
+
+## WOWII 328: false
+
+> Let `G` be a simple connected graph with `n > 1`. If `4 μ(Ḡ) ≤` frequency of
+> `max {K(v)}`, where `K(v)` is the number of `K_4` incident to `v`, then `G` is well totally
+> dominated.
+
+`μ` is the matching number. The frequency of the maximum is the number of vertices at which `K(v)`
+is largest. `G` is well totally dominated if all its minimal total dominating sets have the same
+size. WOWII lists this conjecture as open. It is not in formal-conjectures and has no activity on
+its tracker (checked October 2026).
+
+**Counterexample.** Simulated annealing found the graph (`experiments/saW.cpp`), and
+`experiments/v328.py` verifies it with networkx. It has 10 vertices:
+
+- vertices `0, …, 7` form a `K_8`;
+- `8` and `9` are adjacent;
+- `8` is joined to `1` and `4`, and `9` is joined to `2` and `6`.
+
+The checks:
+
+- Every edge of `Ḡ` contains `8` or `9`, so `μ(Ḡ) ≤ 2`.
+- Each vertex of the `K_8` lies in `C(7, 3) = 35` copies of `K_4`, and `8` and `9` lie in none.
+  So the maximum is attained `8 ≥ 4 μ(Ḡ)` times, and the hypothesis holds.
+- `{1, 8}` and `{0, 3, 8, 9}` are both minimal total dominating sets, so `G` is not well totally
+  dominated.
+
+An exhaustive check over all connected graphs on at most 9 vertices (`experiments/e328.cpp` with
+`nauty-geng`) finds no counterexample, so 10 vertices is the minimum.
+
+**Formalization.** `WOWII328.not_conjecture328` in `OpenProblem/WOWII328.lean` depends only on
+the standard axioms. The same annealing found no counterexample for the WTD conjectures 324
+(residue reading) or 325, on 10, 12 and 14 vertices.
 
 ## WOWII 169: proved
 
