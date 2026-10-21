@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 178, 241, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 178, 241, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII178.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII178.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -234,8 +234,20 @@ graphs up to 9 vertices.
 minimal total dominating sets and well total domination directly. It depends only on the standard
 axioms.
 
-The related conjectures 318, 319, 320, 321, 324, 325 and 328 also hold for all connected graphs up
-to 9 vertices. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices, so it
+**WOWII 320 is also proved** (`OpenProblem/WOWII320.lean`).
+
+> If `maximum dist_even(v) = Tdist_min(G)`, then `G` is well totally dominated.
+
+The two sides are bounded on either side of `n − 1`:
+
+- `Tdist(w) ≥ 2(n−1) − deg(w) ≥ n − 1`.
+- `dist_even(v) ≤ n − deg(v) ≤ n − 1`.
+
+So equality forces a universal vertex and a leaf. The leaf's neighbour is universal and lies in
+every total dominating set, so every minimal total dominating set has exactly two vertices.
+
+The related conjectures 318, 319, 321, 324, 325 and 328 also hold for all connected graphs up to 9
+vertices. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices, so it
 reduces to a finite check, but we have not formalized that check.
 
 ## WOWII 358 and 359: false
