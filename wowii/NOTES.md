@@ -4,13 +4,13 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
   434b, 434c and 449.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 394, 402, 422b, 442, 444, 382b and 401b. The last two fail on
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 393d, 394, 402, 422b, 442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -585,6 +585,30 @@ argument above is not enough. They hold for all connected graphs up to 9 vertice
 
 **Formalization.** `WOWII434.conjecture434b` and `conjecture434c` in `OpenProblem/WOWII434.lean`,
 via `indepDomNum_le_SW`. Both depend only on the standard axioms.
+
+## WOWII 393d: false
+
+> If `G` is a connected graph on `n > 2` vertices, then
+> `γ_2 ≤ μ(G[V − N(N(P))]) + α(G[V − M]) + |M_4|`.
+
+Here `P` is the set of pendants, `M` the set of maximum degree vertices, and `M_4` the set of
+vertices lying in the most copies of `K_4`. WOWII lists this conjecture as open. Conjectures
+393a–c have tracker activity; 393d does not.
+
+**Counterexample.** The graph has 12 vertices and 26 edges and was found by simulated annealing
+(`experiments/sa5.cpp`, verified by `experiments/v393d.py`).
+
+- The pendants `4` and `5` hang at `6` and `9`. So `V − N(N(P)) = {3, 6, 9, 11}`, which is
+  independent, and `μ = 0` there.
+- `M = {1, 2, 7, 10}`. The remaining eight vertices are covered by the edges `0-3`, `4-6`, `5-9`
+  and `8-11`, so `α(G[V − M]) ≤ 4`.
+- Only vertex `2` lies in four copies of `K_4`, so `|M_4| = 1`.
+
+So the bound is at most 5, but `γ_2 = 6`. The pendants lie in every 2-dominating set, and a
+`decide` check over all triples shows that no three further vertices complete one.
+
+**Formalization.** `WOWII393d.not_conjecture393d` in `OpenProblem/WOWII393d.lean` depends only on
+the standard axioms.
 
 ## WOWII 169: proved
 

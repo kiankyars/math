@@ -30,3 +30,4 @@ import OpenProblem.WOWII394
 import OpenProblem.WOWII402
 import OpenProblem.WOWII422b
 import OpenProblem.WOWII434
+import OpenProblem.WOWII393d
