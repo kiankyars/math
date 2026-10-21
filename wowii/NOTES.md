@@ -3,7 +3,7 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
-  323, 426, 434b, 434c, 435, 436c and 449.
+  323, 325, 426, 434b, 434c, 435, 436c and 449.
 - **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 399b, 402, 422b, 425d, 425e,
   439, 442 and 444.
 - **False as stated:** WOWII 382b, 399a and 401b. These fail on very small graphs (`K_3`, complete
@@ -11,7 +11,7 @@ Status, all verified in Lean:
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII323.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -914,6 +914,41 @@ added inside the parts (`experiments/h323.py`). That suggested the proof.
 
 **Formalization.** `WOWII323.conjecture323` in `OpenProblem/WOWII323.lean` depends only on the
 standard axioms.
+
+## WOWII 325: proved
+
+> Let `G` be a simple connected graph with `n > 1`. If
+> `min {|N_Ḡ(e)| : e ∈ E(Ḡ)} ≤ 1 + c`, where `c` is the number of components of `⟨N[S]⟩` and `S` is
+> the set of degree-two vertices, then `G` is well totally dominated.
+
+WOWII lists this conjecture as open, and it has no activity on the formal-conjectures tracker
+(checked October 2026). Among connected graphs up to 9 vertices, every graph satisfying the
+hypothesis has two non-adjacent vertices `u`, `w` that are adjacent to all other vertices, and has
+`c = 1` (`experiments/hW3.py`).
+
+**Proof.** Let `uw` be an edge of `Ḡ` attaining the minimum, `X = N(u) ∩ N(w)` and
+`R = V - X - {u, w}`. Since `|N_Ḡ(u) ∪ N_Ḡ(w)| = n - |X|`, the hypothesis is `|R| + 1 ≤ c`. Each
+component of `⟨N[S]⟩` contains a degree-two vertex and its two neighbours, so it has at least three
+vertices. So `3c ≤ |N[S]|`, and also `c ≤ |S|`.
+
+- *A degree-two vertex `s` lies in `X`.* Then `N(s) = {u, w}`. So `u`, `w` and `X ∩ N[S]` all lie in
+  one component, and the other components lie inside `R`. Hence `3(c - 1) ≤ |R| ≤ c - 1`, so `c = 1`
+  and `R = ∅`.
+- *No degree-two vertex lies in `X`.*
+  - If neither `u` nor `w` has degree two, then `S ⊆ R` and `c ≤ |S| ≤ |R|`, which contradicts the
+    hypothesis.
+  - Otherwise `|X| ≤ 2`, and `3c ≤ n = |R| + |X| + 2` forces `c ≤ 1`, `R = ∅` and `n ≤ 4`.
+
+In both cases `u` and `w` are adjacent to everything else.
+
+- A minimal total dominating set containing `u` (or `w`) contains a neighbour `x ∈ X`, and `{u, x}`
+  already dominates. So it is that pair.
+- A total dominating set inside `X` would have to dominate the degree-two vertex `s` of the first
+  case, whose neighbours are `u` and `w`. In the second case `|X| ≤ 2`, so such a set is a pair.
+
+**Formalization.** `WOWII325.conjecture325` in `OpenProblem/WOWII325.lean` depends only on the
+standard axioms. It counts the components of the induced subgraph through the connected components
+of `G.induce`. `WOWII325.conjecture325'` adds complete graphs, where `Ḡ` has no edges.
 
 ## WOWII 169: proved
 
