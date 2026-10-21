@@ -4,13 +4,13 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380 and
   449.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 394, 442, 444, 382b and 401b. The last two fail on
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 394, 402, 442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -485,8 +485,8 @@ conjecture as transcribed probably differs from what Graffiti.pc produced.
 `not_conjecture401b_numTri`, both for `K_{1,6}`. Both depend only on the standard axioms.
 
 Other members of this batch that are clearly defined and have no tracker activity hold for all
-connected graphs up to 9 vertices (`experiments/t4xx.cpp`): 395a, 402, 421b, 421c, 422a, 422b,
-422c, 426 and 438a.
+connected graphs up to 9 vertices (`experiments/t4xx.cpp`): 395a, 421b, 421c, 422a, 422c, 426 and
+438a (402 and 422b fail only at 12 and 14 vertices; see below).
 
 ## WOWII 394: false
 
@@ -513,6 +513,37 @@ finds no counterexample on 11 or 13 vertices.
 
 **Formalization.** `WOWII394.not_conjecture394` in `OpenProblem/WOWII394.lean` depends only on the
 standard axioms.
+
+## WOWII 402: false
+
+> Let `G` be a connected graph on `n > 2` vertices. Then
+> `γ_2 ≤ 2[isolates(G[A_δ]) + |{v : |N(v) ∩ A_Δ| = 1}| + γ_t]`.
+
+WOWII lists this conjecture as open (January 2010).
+
+**Counterexample.** The graph has 12 vertices and 32 edges and was found by simulated annealing
+(`experiments/sa4.cpp`; edge list in `OpenProblem/WOWII402.lean`).
+
+- The minimum degree 3 is attained only at the adjacent vertices `2` and `7`, so
+  `isolates(G[A_δ]) = 0`.
+- The maximum degree 7 is attained at `0, 1, 9, 10, 11`, and every vertex has zero or at least
+  two neighbours among them.
+- `{0, 1}` is a total dominating set.
+
+So the bound is at most 4. A `decide` check over all quadruples of distinct vertices shows that no
+four vertices 2-dominate, so `γ_2 ≥ 5` (in fact `γ_2 = 5`). Annealing finds no counterexample at
+10 or 11 vertices.
+
+**Formalization.** `WOWII402.not_conjecture402` in `OpenProblem/WOWII402.lean` depends only on the
+standard axioms.
+
+**WOWII 422b (not formalized).** Annealing also produced a 14-vertex graph violating
+`i(G) ≤ α(G[M]) + γ(G[V − M])²`, where `M` is the set of maximum degree vertices. Its unique
+vertex of maximum degree has degree 8, `γ(G − M) = 2`, and brute force gives `i(G) = 6 > 5`
+(`experiments/v402.py`). The edge list is
+`0-2 0-3 0-8 0-9 0-10 0-12 0-13 1-2 1-3 1-5 1-8 1-9 1-10 1-12 1-13 2-7 3-10 4-9 5-8 5-9 5-10 5-12
+6-8 6-9 6-12 7-8 7-9 7-12 8-11 9-11 11-12`. We do not count 422b as resolved until this is
+formalized.
 
 ## WOWII 169: proved
 
