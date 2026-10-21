@@ -1,10 +1,15 @@
 # Graffiti-type graph conjectures: notes
 
-Status: **WOWII Conjectures 178, 348, 372 and 377 are proved and verified in Lean**
-(`OpenProblem/WOWII178.lean`, `OpenProblem/WOWII348.lean`, `OpenProblem/WOWII372.lean`,
-`OpenProblem/WOWII377.lean`). **WOWII Conjecture 378 is refuted in Lean**
-(`OpenProblem/WOWII378.lean`), and **WOWII Conjecture 367 is resolved in Lean** (true with a strict
-mode, false with ties; `OpenProblem/WOWII367.lean`).
+Status, all verified in Lean:
+
+- **Proved:** WOWII 178, 241, 348, 372, 377 and 380.
+- **Refuted:** WOWII 378.
+- **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
+  ties are allowed.
+
+The files are `OpenProblem/WOWII178.lean`, `WOWII241`/`WOWII380` (both in
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII367.lean`, `WOWII372.lean`, `WOWII377.lean`
+and `WOWII378.lean`.
 The other conjectures below are still open. For them we record evidence and partial results only.
 
 Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the JSON
@@ -197,6 +202,51 @@ gives `3γ_t ≥ 4(m + 2) ≥ 4 dd`.
 
 All three depend only on the standard axioms.
 
+## WOWII 380 and 241: proved
+
+> **380.** If `T` is a tree on `n > 2` vertices, then `γ_t(T) ≥ |D_even(T)| / (ecc(C) - 1)`, where
+> `C` is the center and `D_even(T)` is the set of vertices of even degree.
+
+> **241.** If `G` is a tree, then `γ_t(G) ≥ FLOOR[number of components(<N[S]>) + dist_avg(C)]`,
+> where `S` is the set of degree-2 vertices and `C` is the center.
+
+Both are listed as open (241 since 2007, 380 since 2009). We prove 380 under two readings of
+`ecc(C)`: the eccentricity `max_v d(v, C)` of the set `C`, and the eccentricity of a center vertex
+(the radius). We prove 241 with `dist_avg(C)` the mean distance between distinct center vertices,
+by analogy with `dist_avg(V)`.
+
+**Tree facts used.**
+
+- **Centers are equal or adjacent.** Suppose two center vertices `c, c'` are at distance at
+  least 2, and let `m` be the second vertex of the path from `c` to `c'`. Every path from a vertex
+  to `c` or to `c'` passes through `m`, so `m` has smaller eccentricity. This is a contradiction.
+- **Non-leaves versus total dominating sets.** Every tree satisfies `#non-leaves ≤ 2γ_t − 2`.
+  This follows from the WOWII 367 edge count.
+
+  If every vertex lies within distance 2 of the center, the bound improves to
+  `#non-leaves ≤ γ_t`. In that case every non-leaf outside the center is a support vertex, and
+  short-cycle arguments (every tree edge is a bridge) give an injection from the non-leaves
+  outside `S` into the leaves inside `S`.
+- **Components of `<N[A]>`.** For any vertex set `A`, the subgraph `<N[A]>` has at most `γ_t − 1`
+  components. Each component contains a vertex of `S`. If each contained exactly one, those
+  vertices would need neighbours in `S` outside `N[A]`.
+
+**Proof of 380.** Every even-degree vertex is a non-leaf. Split on `e = ecc(C)`:
+
+- If `e ≥ 3`, then `|D_even| ≤ 2γ_t − 2 ≤ (e − 1)γ_t`.
+- If `e = 2`, the tree lies within distance 2 of its center, so `|D_even| ≤ γ_t`.
+- If `e ≤ 1`, the right side is at most 0.
+
+**Proof of 241.** Distinct centers are adjacent, so `dist_avg(C) ≤ 1`. The floor is therefore at
+most `#components + 1 ≤ γ_t`.
+
+The readings of `dist_avg(C)` as the mean distance to `C` (over all vertices, or over non-centers)
+also held for all trees up to 16 vertices, but we have not proved them.
+
+**Formalization.** `OpenProblem/WOWII380.lean` contains `conjecture380`, `conjecture380_rad` and
+`conjecture241`, together with the reusable `center_adj` and `nonleaves_le_of_near`. All depend
+only on the standard axioms.
+
 ## WOWII 372: proved
 
 > If `T` is a tree on `n > 2` vertices, then `γ_t(T) ≥ v_c(T) / (p(T) - 1)`.
@@ -305,6 +355,12 @@ None failed on about 143,000 random graphs with 10–15 vertices. All but 161, 1
 300 and 434e were also checked on every connected graph with at most 10 vertices (11,716,571
 graphs at `n = 10`); those seven were checked exhaustively up to 9 vertices.
 
+- Other tree conjectures of this batch were tested with all trees up to 17 vertices and 20,000
+  random trees with at most 60 vertices (`experiments/trees_battery.cpp`):
+  - 242, 342, 343, 344, 356 (distance-to-set reading), 358 and 359 (set-eccentricity reading)
+    show no counterexample.
+  - 374 and 375 fail on trees with 3 to 5 vertices under every reading of `B`, `dist_avg` and
+    the median that we tried. This points to a transcription problem, so we do not claim them.
 - WOWII 174 (`L_s + b ≥ n + max λ - 1`, Conjecture 3 of DeLaViña–Waller 2008) and
   WOWII 177 (`L_s + b ≥ 2α + σ`, where `σ` is the second-smallest degree) hold for all connected
   graphs up to 9 vertices. Both have many equality cases, such as `C5` with pendants at one
