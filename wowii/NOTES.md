@@ -4,13 +4,13 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380 and
   449.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 442, 444 and 382b (the last only by `K_3`; see its
-  section).
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 442, 444, 382b and 401b. The last two fail on
+  very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII401b.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -466,6 +466,27 @@ graphs up to 9 vertices, and annealing finds counterexamples at 11 vertices but 
 
 **Formalization.** `WOWII444.not_conjecture444` in `OpenProblem/WOWII444.lean` depends only on the
 standard axioms. The `K_4` counts are computed by `decide`.
+
+## WOWII 401b: false as stated (stars)
+
+> Let `G` be a connected graph on `n > 2` vertices. Then
+> `γ_2 ≤ ⌊3·Tdist_max / freq[T_max(v)]⌋`.
+
+`freq[T_max(v)]` counts the vertices maximising `T(v)`. We read `T(v)` either as the number of
+triangles at `v` or as the total distance `Tdist(v)`.
+
+Every star `K_{1,k}` with `k ≥ 6` refutes the conjecture under both readings. Its leaves all lie
+in every 2-dominating set, so `γ_2 = k`. On the other hand `Tdist_max = 2k − 1`, and the
+frequency is `k + 1` (no triangles) or `k` (the leaves maximise total distance), so the bound is
+at most 5. For the triangle reading `K_{1,5}` already fails. Because it fails on stars, the
+conjecture as transcribed probably differs from what Graffiti.pc produced.
+
+**Formalization.** `OpenProblem/WOWII401b.lean` contains `not_conjecture401b_Tdist` and
+`not_conjecture401b_numTri`, both for `K_{1,6}`. Both depend only on the standard axioms.
+
+Other members of this batch that are clearly defined and have no tracker activity hold for all
+connected graphs up to 9 vertices (`experiments/t4xx.cpp`): 394, 395a, 402, 421b, 421c, 422a, 422b,
+422c, 426 and 438a.
 
 ## WOWII 169: proved
 
