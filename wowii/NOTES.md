@@ -4,13 +4,13 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380 and
   449.
-- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 442, 444, 382b and 401b. The last two fail on
+- **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 394, 442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII401b.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -485,8 +485,34 @@ conjecture as transcribed probably differs from what Graffiti.pc produced.
 `not_conjecture401b_numTri`, both for `K_{1,6}`. Both depend only on the standard axioms.
 
 Other members of this batch that are clearly defined and have no tracker activity hold for all
-connected graphs up to 9 vertices (`experiments/t4xx.cpp`): 394, 395a, 402, 421b, 421c, 422a, 422b,
+connected graphs up to 9 vertices (`experiments/t4xx.cpp`): 395a, 402, 421b, 421c, 422a, 422b,
 422c, 426 and 438a.
+
+## WOWII 394: false
+
+> If `G` is a connected graph on `n > 2` vertices, then `γ_2 ≤ μ(G) + |E(G[A_2])| + |M|`,
+> where `M` is the set of vertices of minimum local independence and `A_2` the set of degree-two
+> vertices.
+
+WOWII lists this conjecture as open (January 2010).
+
+**Counterexample.** The graph has 12 vertices and 15 edges, found by simulated annealing
+(`experiments/sa4.cpp`). It consists of a 4-cycle `3 – 1 – 5 – 2 – 3` with a leaf `4` at `5`,
+and the edge `3 – 6` to the part `R = {0, 6, 7, 8, 9, 10, 11}`, whose edges are `0-6`, `0-7`,
+`0-10`, `6-9`, `6-11`, `7-8`, `7-9`, `8-11` and `10-11`.
+
+- `λ = 1` only at the leaf, so `|M| = 1`.
+- The degree-two vertices `1, 2, 8, 9, 10` are independent, so `|E(G[A_2])| = 0`.
+- `μ ≤ 5`: a perfect matching would match `4–5`, and then both `1` and `2` to `3`.
+- `γ_2 ≥ 7`. A 2-dominating set contains `4`, and either both of `1, 2` or both of `3, 5`. It
+  also contains at least four vertices of `R`, by a short case analysis on `8, 9, 10`, whose
+  neighbourhoods are `{7, 11}`, `{6, 7}` and `{0, 11}`.
+
+So `γ_2 = 7 > 6`. The conjecture holds for all connected graphs up to 9 vertices, and annealing
+finds no counterexample on 11 or 13 vertices.
+
+**Formalization.** `WOWII394.not_conjecture394` in `OpenProblem/WOWII394.lean` depends only on the
+standard axioms.
 
 ## WOWII 169: proved
 
