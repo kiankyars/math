@@ -3,14 +3,14 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
-  434b, 434c and 449.
+  426, 434b, 434c and 449.
 - **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 393d, 394, 402, 422b, 442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -485,8 +485,8 @@ conjecture as transcribed probably differs from what Graffiti.pc produced.
 `not_conjecture401b_numTri`, both for `K_{1,6}`. Both depend only on the standard axioms.
 
 Other members of this batch that are clearly defined and have no tracker activity hold for all
-connected graphs up to 9 vertices (`experiments/t4xx.cpp`): 395a, 421b, 421c, 422a, 422c, 426 and
-438a (402 and 422b fail only at 12 and 14 vertices; see their sections).
+connected graphs up to 9 vertices (`experiments/t4xx.cpp`): 395a, 421b, 421c, 422a, 422c and 438a
+(426 has since been proved) (402 and 422b fail only at 12 and 14 vertices; see their sections).
 
 ## WOWII 394: false
 
@@ -609,6 +609,22 @@ So the bound is at most 5, but `γ_2 = 6`. The pendants lie in every 2-dominatin
 
 **Formalization.** `WOWII393d.not_conjecture393d` in `OpenProblem/WOWII393d.lean` depends only on
 the standard axioms.
+
+## WOWII 426: proved
+
+> Let `G` be a connected graph on `n > 3` vertices and `M` the vertices of maximum degree. Then
+> `i(G) ≤ n − γ(G[N(M)])`.
+
+WOWII lists this conjecture as open (December 2010).
+
+**Proof** (any finite graph, any set `M`). Let `J` be a maximal independent subset of `M`, and
+extend it to a maximal independent set `I` of `G`, which is independent dominating. Then
+`N(M) \ I` dominates `G[N(M)]`. If `x ∈ N(M) ∩ I` has a neighbour `m ∈ M`, then `m ∉ J`, because
+`I` is independent. By maximality of `J`, `m` has a neighbour in `J ⊆ I`, so `m ∉ I` and
+`m ∈ N(M)`. Hence `i(G) + γ(G[N(M)]) ≤ |I| + |N(M) \ I| ≤ n`.
+
+**Formalization.** `WOWII426.conjecture426` in `OpenProblem/WOWII426.lean`, via
+`indepDomNum_add_domNum_le`, depends only on the standard axioms.
 
 ## WOWII 169: proved
 
