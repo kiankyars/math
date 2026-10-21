@@ -771,9 +771,23 @@ vertices have degree at least `k - 1`, which equals `max_i min(d_i + 1, i)`.
 - `α_2`: 435 and 438a;
 - `γ_t`: 232, 233, 255, 256, 299, 302 and 304.
 
-For 298 (`γ_t ≤ a(G) + χ_{C_4}(G)`) it found 12-vertex trees with `γ_t = a + 1`. These are the
-extremal trees of Desormeaux, Haynes and Henning (2013), who proved `γ_t(T) ≤ a(T) + 1` for trees
-and characterized equality. So 298 is already settled by the literature, and we do not claim it.
+For 298 (`γ_t ≤ a(G) + χ_{C_4}(G)`) it found 12-vertex trees with `γ_t = a + 1`, but only because
+`sa12.cpp` reads `χ_{C_4}` as "contains a 4-cycle". With the reading used below for 133 and 298
+(`χ_{C_4} = 1` for C4-free graphs), the tree case is exactly the theorem `γ_t(T) ≤ a(T) + 1` of
+Desormeaux, Haynes and Henning (2013). With the other reading the conjecture already fails on
+`P_6`. Either way we make no claim about 298.
+
+**More annealing with exact branch and bound** (`experiments/sa13.cpp`: `b`, `tree(G)` and `L_s`
+via the connected domination number, all checked against brute force up to 8 vertices). Nothing
+was found for:
+
+- 72, 76, 84, 108, 111, 165, 166, 174, 180, 183 and 185, up to 20 vertices.
+- 258, 259 and 260 (`γ_t ≥ 2X/L_s`, with `L(G) = L_s` as in formal-conjectures' 217, and `X` the
+  largest even-distance count, `|N(M) - M|` or `|N(B) - B|`), up to 26 vertices. All three are
+  tight on paths, cycles and stars. 261 was also tested, up to 20 vertices.
+- 182, 184 and 186, with `B(G²)` the periphery of `G²` as in formal-conjectures' 181. We tried two
+  readings of `Δ(B(G²))`, two of `dist_avg(B(G²), V)` and two of `N(C(G²))`, up to 18 vertices.
+- 431c (`i ≤ residue · |T_max| + dd`), up to 24 vertices.
 
 ## WOWII 169: proved
 
@@ -893,8 +907,16 @@ minimum dominating set. The graphs satisfying this hypothesis include:
 - every corona `H ∘ K₁`;
 - `C₄`, `C₇` and `K_{2,2,2}`.
 
-So we have not found a characterization. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices, so it
-reduces to a finite check, but we have not formalized that check.
+So we have not found a characterization. For 321, the hypothesis `ecc_avg ≥ Tdist_max/3` forces at most 7 vertices: a vertex of
+eccentricity `D` has `Tdist ≥ n - 1 + D(D - 1)/2`, while `ecc_avg ≤ D`. An exhaustive check up to 8 vertices (`experiments/c321.py`) shows that exactly 16 connected
+graphs satisfy it, all with at most 6 vertices:
+
+- `K_2`, `P_3`, `K_3`, `K_{1,3}`, `P_4`, `C_4`, the paw, `K_4 - e` and `K_4`;
+- `C_5`, `K_{2,3}` and three other graphs on 5 vertices;
+- `C_6` and `K_{2,2,2}`.
+
+All 16 are well totally dominated, so 321 holds by computer check. This is not verified in Lean,
+so we do not list 321 as proved above.
 
 ## WOWII 358 and 359: false
 
