@@ -3,7 +3,7 @@
 Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
-  426, 434b, 434c, 435 and 449.
+  426, 434b, 434c, 435, 436c and 449.
 - **Refuted:** WOWII 267, 281, 300, 328, 399b, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 439,
   442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
@@ -11,7 +11,7 @@ Status, all verified in Lean:
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -811,6 +811,53 @@ This is the Szekeres–Wilf analogue of the bound `α_k ≤ WP(Ḡ) + k - 1` of 
 **Formalization.** `WOWII435.conjecture435` and `WOWII435.conjecture435'` in
 `OpenProblem/WOWII435.lean` depend only on the standard axioms. The key lemma is
 `WOWII435.twoIndepNum_le_SW`.
+
+## WOWII 436c: proved
+
+> Let `G` be a connected graph on `n > 3` vertices. Then `α_2(G) ≤ k · WP(Ḡ) + Δ(G[D])`, where
+> `Δ(G[D])` is the maximum degree of the subgraph induced by the neighbor dominators and `k` is the
+> `k`th step for a zero in the Havel–Hakimi process.
+
+WOWII marks this conjecture "open, partial results known". DeLaViña and Pepper proved
+`α_k ≤ WP(Ḡ) + k - 1`, and the WOWII note says it "simply remains to settle `α_2 ≤ WP(Ḡ)`
+whenever the neighbor dominators are isolated in the subgraph that they induce and when `k = 1`".
+We follow formal-conjectures' reading of `k` (their Conjecture 291): the least `i` such that the
+list contains a zero after `i` Havel–Hakimi steps. It has no activity on the formal-conjectures
+tracker (checked October 2026).
+
+**The cases.**
+
+- If `Δ(G[D]) ≥ 1` or `k ≥ 2`, the conjecture follows from `α_2 ≤ WP(Ḡ) + 1`. That bound holds
+  because the `s` vertices of a 2-independent set have degree at least `s - 2` in `Ḡ`.
+- If `k = 1`, the first step already produces a zero. Since the list is sorted, at most `Δ`
+  vertices have degree at least two.
+
+**Proof of the remaining case** (`k = 1`, `D` independent). Let `S` be a maximum 2-independent set
+with `s = |S|`, and call a vertex small if its degree is at most `n - s`. A small vertex has degree
+at least `s - 1` in `Ḡ`, so `s` small vertices give `WP(Ḡ) ≥ s`.
+
+- If every vertex of `S` is small, we are done.
+- Otherwise some `x ∈ S` has degree `n - s + 1`. So `x` is adjacent to all of `V - S` and to
+  exactly one `y ∈ S`, and `N[y] ⊆ N[x]`.
+  - Then `x ∈ D`. Since `D` is independent, `V - S` contains no neighbor dominators, and in
+    particular no support vertices.
+  - A vertex `v₁` of maximum degree has more neighbours than there are non-leaves, so it has a
+    leaf. So `v₁ ∈ D ∩ S`, which forces `Δ = n - s + 1`. There are then at least `n - Δ = s - 1`
+    leaves, all small.
+  - If there are exactly `s - 1` leaves and no non-leaf is small, every non-leaf has degree
+    `Δ = |H|`, where `H` is the set of non-leaves. So every non-leaf has a leaf neighbour, and
+    every non-leaf lies in `D`.
+  - Some neighbour of `v₁` is a non-leaf. Otherwise `v₁` and its leaves would be all of `G`,
+    contradicting `|H| ≥ 2`. That neighbour and `v₁` are adjacent vertices of `D`, which is a
+    contradiction.
+
+An exhaustive check up to 9 vertices, annealing up to 20 vertices and a structured search
+(`experiments/s436.cpp`) found no graph with `k = 1`, independent `D` and `α_2 > WP(Ḡ)`, as the
+proof predicts.
+
+**Formalization.** `WOWII436c.conjecture436c` in `OpenProblem/WOWII436c.lean` depends only on the
+standard axioms. It defines the Havel–Hakimi process explicitly. The key case is
+`WOWII436c.twoIndepNum_le_WP`.
 
 ## WOWII 169: proved
 
