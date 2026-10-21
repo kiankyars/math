@@ -2,15 +2,15 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380 and
-  449.
+- **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
+  434b, 434c and 449.
 - **Refuted:** WOWII 267, 281, 300, 358, 359, 378, 394, 402, 422b, 442, 444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -560,6 +560,31 @@ So the bound is at most `1 + 2² = 5`. But `i(G) = 6`. Let `I` be an independent
 
 **Formalization.** `WOWII422b.not_conjecture422b` in `OpenProblem/WOWII422b.lean` depends only on
 the standard axioms.
+
+## WOWII 434b and 434c: proved
+
+> **434b.** `i(G) ≤ δ(G[M]) + 1 + SW(Ḡ)`, and `i(G) ≤ δ(G[M]) + SW(Ḡ)` if the diameter exceeds 2.
+> **434c.** `i(G) ≤ δ(G[V − M]) + 1 + SW(Ḡ)`, and `i(G) ≤ δ(G[V − M]) + SW(Ḡ)` if `δ(G) = 1`.
+
+Here `M` is the set of maximum degree vertices, `i` is the independent domination number, and
+`SW(H) = 1 + max_X δ(H[X])` is the Szekeres–Wilf number. WOWII lists both as open
+(December 2010).
+
+**Proof.** Both follow from `i(G) ≤ SW(Ḡ)`, because the extra terms are nonnegative and the side
+conditions are not needed.
+
+- Let `v` have maximum degree `Δ`. Then `v` together with a maximal independent set of
+  `G − N[v]` is independent and dominating, so `i(G) ≤ n − Δ`.
+- Taking `X = V` gives `SW(Ḡ) ≥ 1 + δ(Ḡ) = n − Δ`.
+
+The same argument covers 434a, if its `|M|` means the number of maximum degree vertices:
+`i ≤ SW ≤ |M| + 2⌊SW/2⌋`. We do not claim 434a because its statement also mentions an unused set
+`P`. For 434d and 434e, the bounds subtract `c(G[N[B]])` and `ecc(C)` respectively, so the
+argument above is not enough. They hold for all connected graphs up to 9 vertices
+(`experiments/t434.cpp`).
+
+**Formalization.** `WOWII434.conjecture434b` and `conjecture434c` in `OpenProblem/WOWII434.lean`,
+via `indepDomNum_le_SW`. Both depend only on the standard axioms.
 
 ## WOWII 169: proved
 
