@@ -2,12 +2,12 @@
 
 Status, all verified in Lean:
 
-- **Proved:** WOWII 96, 169, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
+- **Proved:** WOWII 96, 161, 169, 178, 241, 318, 320, 326, 348, 372, 377 and 380.
 - **Refuted:** WOWII 358, 359 and 378.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -202,6 +202,22 @@ gives `3γ_t ≥ 4(m + 2) ≥ 4 dd`.
 - `not_conjecture367_ties`: the tie-allowing reading is false, checked on the 12-vertex tree.
 
 All three depend only on the standard axioms.
+
+## WOWII 161: proved
+
+> If `G` is a simple connected graph, then `L_s(G) ≥ maximum of λ(v) of Ḡ`.
+
+Here `λ(v)` computed in the complement `Ḡ` is `α(Ḡ[N_Ḡ(v)])`, which is the order of a largest
+clique of `G` made of vertices not adjacent to `v` (and different from `v`). WOWII lists this
+conjecture as open.
+
+**Proof.** Let `K` be a clique of `G` avoiding `N[v]`. Because `G` is connected and `v ∉ K`, some
+`x ∈ K` has a neighbour `y ∉ K`. Then `deg x ≥ (|K| − 1) + 1 = |K|`. The star at `x` is acyclic, so
+it extends to a spanning tree `T`. The degree sum `∑ deg_T = 2n − 2` gives
+`deg_T x ≤ #leaves(T)`, hence `L_s ≥ deg x ≥ |K|`.
+
+**Formalization.** `WOWII161.conjecture161` in `OpenProblem/WOWII161.lean` (with the helper
+`degree_le_Ls`: `deg x ≤ L_s` for every vertex) depends only on the standard axioms.
 
 ## WOWII 169: proved
 
