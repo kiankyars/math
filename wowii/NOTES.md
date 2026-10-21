@@ -4,14 +4,14 @@ Status, all verified in Lean:
 
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 326, 348, 372, 377, 380,
   426, 434b, 434c and 449.
-- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 402, 422b, 425d, 442, 444,
-  382b and 401b. The last two fail on
+- **Refuted:** WOWII 267, 281, 300, 328, 358, 359, 378, 393d, 394, 402, 422b, 425d, 425e, 442,
+  444, 382b and 401b. The last two fail on
   very small graphs (`K_3` and stars), which suggests transcription problems; see their sections.
 - **Resolved both ways:** WOWII 367, which is true when degree 2 is a strict mode and false when
   ties are allowed.
 
 The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII320.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
-`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
+`OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII382b.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII434.lean` (434b and 434c), `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
 The other conjectures below are still open. For them we record evidence and partial results only.
@@ -679,6 +679,35 @@ An exhaustive check over all connected graphs on at most 9 vertices (`experiment
 **Formalization.** `WOWII328.not_conjecture328` in `OpenProblem/WOWII328.lean` depends only on
 the standard axioms. The same annealing found no counterexample for the WTD conjectures 324
 (residue reading) or 325, on 10, 12 and 14 vertices.
+
+## WOWII 425e: false
+
+> Let `G` be a connected graph on `n > 3` vertices and `D` the set of neighbor dominators of `G`.
+> Then `i(G) ≤ 4|T_min(G)| + |E(G[D])|`.
+
+DeLaViña and Pepper (*Graffiti.pc on the k-independence number of a graph*) call `v` a neighbor
+dominator if `N[u] ⊆ N[v]` for some vertex `u ≠ v`. WOWII lists this conjecture as open
+(December 2010). It has no activity on the formal-conjectures tracker (checked October 2026).
+
+**Counterexample.** Simulated annealing found the graph (`experiments/sa9.cpp`, which computes `i`
+by branching), and `experiments/v425e.py` verifies it by brute force. It has 12 vertices and
+27 edges:
+
+- No vertex is a neighbor dominator, so `|E(G[D])| = 0`.
+- Vertex `10` lies in no triangle, and every other vertex lies in at least one, so
+  `|T_min| = 1`.
+
+So the bound is `4`, but `i(G) = 5`. Annealing finds many counterexamples on 12 to 24 vertices,
+and an exhaustive search finds none on 10 or fewer vertices. Since `D = ∅`, the result does not
+depend on how `D` is read, as long as `u ≠ v` is required.
+
+**Formalization.** `WOWII425e.not_conjecture425e` in `OpenProblem/WOWII425e.lean` depends only on
+the standard axioms. `i(G) ≥ 5` is a `decide` check over all quadruples.
+
+In the same batch, annealing (`experiments/sa8.cpp`) on 8 to 14 vertices found no counterexample
+for 439 or 399c, and an exhaustive check up to 8 vertices found none either. 397c, 420b, 420c,
+422d, 423, 430a and 433 were also searched but have tracker activity, so we make no claim about
+them.
 
 ## WOWII 169: proved
 
