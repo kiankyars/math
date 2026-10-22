@@ -1591,6 +1591,19 @@ of 40 has `p = 1`. The case `p ≤ 1` is easy: the larger side `X` of a maximum 
 subgraph, plus one neighbour, is an induced forest, so `2f ≥ b + 2`. For 100, a proof appears on
 the tracker (formal-conjectures PR #5221).
 
+### Dead ends recorded (October 22, 2026)
+
+- 199: the route through Chvátal–Erdős fails. The lemma "`α ≥ κ + 2` implies `tree ≥ κ + 3`" is
+  false on 7 vertices (`F?z\w`), although that graph has a Hamiltonian path
+  (`experiments/c199.cpp`).
+- 61: the stronger `f ≥ α + ⌈diam/3⌉` fails on 6 vertices (`E?zO`), so a proof must use
+  `res < α`.
+- 72: under the reading `tree ≥ ⌈(ecc_avg + λ_max)/3⌉` the bound is trivial, since
+  `tree ≥ max(diam, λ_max) + 1`. Under the reading `tree ≥ ⌈ecc_avg + λ_max/3⌉`:
+  - The equality cases up to 9 vertices are two hubs sharing several common neighbours, with
+    pendant paths at the hubs (`experiments/eq72.cpp`).
+  - Annealing at 14–22 vertices found slack of at least 1 (`experiments/s72.cpp`).
+
 ### TxGraffiti Conjecture 3 (refuted by others)
 
 *Update (October 2026):* formal-conjectures issue #6737 records a 48-vertex cubic counterexample
