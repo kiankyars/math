@@ -1579,6 +1579,18 @@ well totally dominated: any two vertices from different factors of the join form
 dominating set. A full proof would need finer upper bounds on the Havel–Hakimi residue, since with
 `α` in place of `R` the statement fails on 7 vertices.
 
+### Exhaustive search on 11 vertices (October 2026)
+
+`experiments/n10c.cpp` checks the lower bounds 72 (both readings), 76, 84, 165, 166 and 258–261
+on all 1,006,700,565 connected graphs with 11 vertices (16 shards of `geng -c 11`). None fails.
+The minimum slack is `0` for 72a, 84, 165, 166 and 258–260, `2/3` for 261 and `1` for 72b and 76.
+
+`wowii/experiments/c40.cpp` checks 40 (`f ≥ ⌈(p + b + 1)/2⌉`) and 100 on all 11,716,571 connected
+graphs with 10 vertices. Neither fails, and both are tight. Up to 8 vertices every equality case
+of 40 has `p = 1`. The case `p ≤ 1` is easy: the larger side `X` of a maximum induced bipartite
+subgraph, plus one neighbour, is an induced forest, so `2f ≥ b + 2`. For 100, a proof appears on
+the tracker (formal-conjectures PR #5221).
+
 ### TxGraffiti Conjecture 3 (refuted by others)
 
 *Update (October 2026):* formal-conjectures issue #6737 records a 48-vertex cubic counterexample
