@@ -5,8 +5,9 @@ Status, all verified in Lean:
 - **Proved:** WOWII 96, 161, 162, 169, 178, 179, 241, 310, 318, 320, 321, 323, 325, 326, 348,
   361, 372, 377, 380, 426, 434b, 434c, 435, 436c, 438a and 449. (For 361 the tracker cites an
   informal manuscript proof; see its section.)
-- **Refuted:** WOWII 255, 256, 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402,
-  422b, 425d, 425e, 427, 439, 442 and 444. (427 leaves `C` undefined; one tree refutes both
+- **Refuted:** WOWII 174, 255, 256, 267, 281, 300, 319, 328, 358, 359, 378, 393d, 394, 399b, 402,
+  422b, 425d, 425e, 427, 439, 442 and 444. (174 is also Conjecture 3 of DeLaViña–Waller, EJC
+  2008.) (427 leaves `C` undefined; one tree refutes both
   readings, `C` the centre and `C = M`.)
 - **False as stated:** WOWII 382b, 391, 399a, 401b and 412f. These fail on very small graphs
   (`K_3`, complete graphs, stars and a 5-vertex spider), which suggests transcription problems;
@@ -16,7 +17,7 @@ Status, all verified in Lean:
   - WOWII 434a is true when its undefined `M` is the set of maximum degree vertices, and false
     when `|M|` is read as the number of pendants (the set `P` that the statement defines).
 
-The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII255.lean`, `WOWII256.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
+The files are `OpenProblem/WOWII96.lean`, `WOWII161.lean`, `WOWII162.lean`, `WOWII169.lean`, `WOWII174.lean`, `WOWII178.lean`, `WOWII179.lean`, `WOWII255.lean`, `WOWII256.lean`, `WOWII267.lean`, `WOWII281.lean`, `WOWII300.lean`, `WOWII310.lean`, `WOWII318.lean`, `WOWII319.lean`, `WOWII320.lean`, `WOWII321.lean`, `WOWII323.lean`, `WOWII325.lean`, `WOWII326.lean`, `WOWII328.lean`, `WOWII241`/`WOWII380` (both in
 `OpenProblem/WOWII380.lean`), `WOWII348.lean`, `WOWII358.lean` (358 and 359), `WOWII361.lean`, `WOWII382b.lean`, `WOWII391.lean`, `WOWII393d.lean`, `WOWII394.lean`, `WOWII399a.lean`, `WOWII399b.lean`, `WOWII401b.lean`, `WOWII402.lean`, `WOWII412f.lean`, `WOWII422b.lean`, `WOWII425d.lean`, `WOWII425e.lean`, `WOWII426.lean`, `WOWII427.lean`, `WOWII434.lean` (434a, 434b and 434c), `WOWII435.lean`, `WOWII436c.lean`, `WOWII438a.lean`, `WOWII439.lean`, `WOWII442.lean`, `WOWII444.lean`, `WOWII449.lean`, `WOWII367.lean`, `WOWII372.lean`,
 `WOWII377.lean` and `WOWII378.lean`.
 
@@ -26,6 +27,48 @@ Source of statuses: E. DeLaViña, *Written on the Wall II* (WOWII), through the 
 transcription of the archived "open" page, cross-checked in October 2026 against the issue
 tracker of google-deepmind/formal-conjectures. Some WOWII conjectures have recently been
 resolved there by other contributors, so we only claim numbers with no activity on that tracker.
+
+## WOWII 174: false (DeLaViña–Waller Conjecture 3)
+
+> If `G` is a simple connected graph on at least 2 vertices, then
+> `L_s(G) + b(G) ≥ n + max_v λ(v) - 1`.
+
+This is Conjecture 3 (Graffiti.pc 174) of E. DeLaViña and B. Waller, *Spanning trees with many
+leaves and average distance*, Electron. J. Combin. 15 (2008), #R33: `L ≥ n - b + µ - 1`. Here
+`µ` is the local independence number. The paper proves the weaker bounds `L ≥ n - b + 1` and
+`L ≥ n - b + ⌈µ/2⌉`.
+
+**Counterexample.** The graph `J{Thg_@?G__` on 11 vertices. The vertex `3` is a cut vertex.
+
+- `A = {0, 1, 2, 4, 5, 6}` is a 3-sun: a triangle `1, 2, 5` whose edges are capped by `0`, `4`
+  and `6`. The vertex `3` is adjacent to the three caps.
+- `3 - 7 - 8 - 9 - 10 - 3` is a 5-cycle.
+
+Then:
+
+- `µ ≥ λ(3) = 5`.
+- `b = 8`. The four triangles of the sun need two deletions and the 5-cycle a third.
+- `L_s = 6`. Every connected dominating set contains `3`, at least two vertices of `A` (to
+  dominate `1, 2, 5` while staying connected to `3`), and at least two of `7, ..., 10`.
+
+So `L_s + b = 14 < 15 = n + µ - 1`. Gluing `s` suns and `c` pentagons at the cut vertex gives
+`L_s + b = n + µ - 1 - s` (for `c ≥ 1`), so the gap is unbounded. Two examples:
+
+- `L{Thg_@?W`?FCD` has two suns and 13 vertices.
+- The 17-vertex graph with `s = 2`, `c = 1` has gap 2.
+
+The conjecture holds for all connected graphs with at most 10 vertices, so 11 is the minimum
+order. Earlier annealing up to 20 vertices had missed this example. A prover agent found it by
+reducing the conjecture to rooted pieces glued at a cut vertex. We recomputed it independently
+twice: with `experiments/n10d.cpp` and with a Python brute force. 174 has no activity on the
+formal-conjectures tracker (checked October 25, 2026), and we found no published refutation.
+
+**Formalization.** `WOWII174.not_conjecture174` in `OpenProblem/WOWII174.lean` depends only on
+the standard axioms. It uses the definitions of `L_s`, `b` and `λ` from
+`OpenProblem/WOWII178.lean`. The bound `L_s ≤ 6` is proved from spanning trees directly:
+- the internal vertices dominate;
+- a tree path between two internal vertices has only internal vertices, so it crosses each cut
+  at `3` along an edge between internal vertices.
 
 ## WOWII 178: proved
 
