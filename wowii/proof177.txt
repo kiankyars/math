@@ -1,0 +1,101 @@
+CONVENTIONS. For a connected graph H with |H| >= 2, L(H) is the largest number of degree-1 vertices in a spanning tree of H. For |H| >= 3 this equals n - gamma_c(H). L(K_2) = 2. For K_2 the conjecture holds under either reading of L_s; see the end of the proof.
+
+An INSTANCE is a pair (G,S) where G is connected with n >= 2, S is an independent set with |S| >= 2, and W = V \ S. W is nonempty because G is connected. Write a = alpha(G[W]), and let d = d(G,S) be the second smallest value in the multiset {deg_G(s) : s in S}. Note that d >= 1.
+
+THEOREM A. For every instance, L(G) >= |S| - a + d.
+
+DEDUCTION OF WOWII 177 FROM THEOREM A.
+- If alpha = 1, G = K_n. Then L_s = n - 1 (and L_s >= 1 when n = 2), b = 2 and sigma = n - 1, so L_s + b >= n + 1 = 2alpha + sigma.
+- If alpha >= 2, let S be a maximum independent set and J a maximum independent set of G - S. G[S u J] is bipartite with sides S and J, so b >= alpha + alpha(G - S).
+- For any two vertices, the larger of their degrees is at least the second smallest degree of G. So d(G,S) >= sigma.
+- Theorem A then gives L_s >= alpha - alpha(G - S) + sigma. Adding the two bounds gives L_s + b >= 2alpha + sigma. QED.
+
+BASIC FACTS (H connected).
+- (F1) If H' is a connected spanning subgraph of H, then L(H) >= L(H').
+- (F2) L(H) >= 2. If |H| >= 3, then L(H) >= Delta(H): start from the star at a vertex of maximum degree and add vertices one at a time; attaching a new vertex never lowers the leaf count.
+- (F3) Let x be a non-cut vertex. Then L(H) >= L(H - x): attach x as a leaf to a neighbour in an optimal tree of H - x. If in addition x has a neighbour v that is a cut vertex of H - x (|H - x| >= 3), then L(H) >= L(H - x) + 1. Reason: v has degree >= 2 in every spanning tree of H - x (deleting a leaf of a tree leaves it connected), so hanging x on v adds one leaf.
+- (F4) For an edge yz, L(H) >= L(H/yz), where H/yz is the simple contraction. Take a spanning tree T' of H/yz and replace the merged vertex m by the edge yz. Each tree edge m-x goes to y or z, whichever is adjacent to x. If m was a leaf, the leaf count is unchanged. If m had degree >= 2, either both y and z have degree >= 2 (count unchanged) or one of them is a new leaf (count +1).
+- (F5) For a W-edge yz, alpha((G/yz)[W']) <= a, where W' = W - y - z + m: an independent set containing m can swap m for y. In G/yz, an S-vertex adjacent to both y and z loses one degree. Every other S-vertex keeps its degree, and S is still independent.
+- (F6) Deleting one element from a multiset of size >= 3 does not lower its second smallest value. Lowering each entry by at most 1 lowers the second smallest value by at most 1.
+
+PROOF OF THEOREM A, by strong induction on n + m. Every reduction below produces an instance with smaller n + m.
+
+CASE d = 1. Let C_1..C_c be the components of G[W]; then c <= a.
+- Let B be the bipartite graph between S and {C_j}, with s ~ C_j when s has a neighbour in C_j. B is connected, because a path in G maps to a walk in B.
+- Build T from a spanning tree of each C_j plus a spanning tree of B, realising each B-edge by one G-edge. T has n - 1 edges and is connected, so it is a spanning tree.
+- The sum over s in S of deg_T(s) is |S| + c - 1, and every deg_T(s) >= 1. Hence at most c - 1 vertices of S have deg_T >= 2.
+- So L(G) >= |S| - c + 1 >= |S| - a + d.
+
+From now on d >= 2.
+
+CASE I: every s in S has deg(s) >= d.
+- (a) Suppose some S-W edge e is not a bridge. In G - e only one S-vertex can drop below d, so d(G-e,S) >= d, and W is unchanged. Induction and F1 finish.
+- (b) Otherwise every S-W edge is a bridge. Then no s in S is adjacent to both ends of a W-edge, since that would put sy on a triangle. If a W-edge yz exists, all S-degrees in G/yz are unchanged (F5), so d' = d and a' <= a. Induction and F4 finish.
+- (c) Otherwise W is independent and every edge is a bridge, so G is a tree with bipartition (S,W) and a = |W|.
+  - n - 1 equals the sum over s in S of deg(s), which is >= d|S|. So |W| >= (d-1)|S| + 1.
+  - Hence |S| - a + d <= (2-d)|S| + d - 1 <= 3 - d <= 1 < 2 <= L(G).
+
+CASE II: some u in S has deg(u) < d. Such a u is unique, and d = min{deg(s) : s in S \ {u}}.
+- (a) Suppose some edge e at u is not a bridge. In G - e, u is still the only S-vertex below d, so d(G-e,S) = d. Induction finishes.
+- (b) Suppose all edges at u are bridges and t = deg(u) >= 2.
+  - Then G - u has exactly t components G_i, each containing exactly one neighbour of u. Let P_i = G[V(G_i) + u], S_i = (S n G_i) + u and W_i = W n G_i.
+  - S-vertices in G_i are not adjacent to u, so they keep their degrees in P_i, while u has degree 1 in P_i.
+  - Put e_i = d(P_i,S_i) if |S_i| >= 2, and e_i = 1 otherwise. Then L(P_i) >= |S_i| - alpha(G[W_i]) + e_i: by induction in the first case, and by L >= 2 with alpha(G[W_i]) >= 1 in the second.
+  - Glue optimal trees T_i at u, which is a leaf of every T_i. The result is a spanning tree with sum(l(T_i)) - t leaves.
+  - Sum |S_i| = |S| - 1 + t, and sum alpha(G[W_i]) = a. So L(G) >= |S| - a + sum(e_i) - 1.
+  - Some piece contains an s in S \ {u}. Its multiset is {1} together with values >= d, so its e_i >= d. All other e_i >= 1.
+  - So sum(e_i) >= d + t - 1 >= d + 1, which finishes this case.
+- (c) Otherwise u is a pendant vertex; call its neighbour w (w is in W).
+  - (c1) |S| = 2, S = {u,s}, d = deg(s).
+    - If a >= 2: F2 gives L >= Delta >= d >= 2 - a + d.
+    - If a = 1, W is a clique. If s ~ w, the star at w spans G, so L = |W| + 1 >= d + 1. Otherwise take the star at w on (W - w) + u and add an edge from s to some y in N(s), y != w. This tree has |W| leaves, and |W| >= d + 1 because N(s) is a subset of W - w.
+  - (c2) |S| >= 3, so n >= 4 and w is a cut vertex.
+    - Among all pairs (c,K) with c a cut vertex of G and K a component of G - c not containing u, pick one with |K| minimum.
+    - CLAIM: no vertex of K is a cut vertex of G. G[V \ K] is connected, since it consists of c plus the other components of G - c, each joined to c. If z in K were a cut vertex, then V \ K would lie inside one component of G - z, and another component K' would be a subset of K - z with u not in K'. That contradicts the minimality of |K|.
+    - If K = {x}, then N(x) = {c} and x != u. If x were in S, then deg(x) = 1 < d, contradicting the uniqueness of u. So x is in W.
+      - If c is in S, x is isolated in G[W], so alpha(G[W - x]) = a - 1. G - x is connected and d(G-x,S) >= d - 1 (F6). By F3 and induction, L(G) >= |S| - (a-1) + (d-1).
+      - If c is in W, contract xc. x has no S-neighbour, so all S-degrees are unchanged. F4, F5 and induction finish.
+    - If |K| >= 2, c has a neighbour x in K. By the CLAIM, x is not a cut vertex, so G - x is connected.
+      - Pick y in K - x. Every path from K to V \ (K + c) passes through c, and u is in V \ (K + c). So G - {x,c} separates y from u, and c is a cut vertex of G - x, which has >= 3 vertices.
+      - By F3, L(G) >= L(G - x) + 1.
+      - If x is in W: (G - x, S) is an instance with alpha(G[W - x]) <= a and d' >= d - 1. Induction gives L(G) >= |S| - a + d.
+      - If x is in S: x != u because u is not in K. (G - x, S - x) is an instance with |S - x| >= 2. W is unchanged, and S-degrees are unchanged because S is independent. By F6, d(G-x,S-x) >= d. Induction gives L(G) >= (|S| - 1) - a + d + 1.
+
+Every instance is therefore either settled directly (the d = 1 case, I(c), II(c1)) or reduced to a smaller instance, which completes the induction. QED.
+
+The proof uses only elementary objects: spanning trees and leaves (or connected dominating sets, via L = n - gamma_c), bridges, cut vertices and one edge contraction. No published theorem is cited.
+LEMMAS [
+ {
+  "statement": "Theorem A (strengthening of WOWII 177): for connected G (n >= 2) and any independent set S with |S| >= 2, L(G) >= |S| - alpha(G[V\\S]) + d_2(S), where d_2(S) is the second smallest degree (in G) among the vertices of S.",
+  "checked_up_to_n": 8
+ },
+ {
+  "statement": "Weaker form: L(G) >= |S| - alpha(G - S) + min_{s in S} deg(s) for every nonempty independent S.",
+  "checked_up_to_n": 8
+ },
+ {
+  "statement": "Case d = 1: L(G) >= |S| - c(G[W]) + 1, where c is the number of components of G[W].",
+  "checked_up_to_n": 8
+ },
+ {
+  "statement": "Every step of the case analysis (I-R3, I-R2, I-tree, II-R3, II-R5 gluing, II-|S|=2, II pendant-component R4/R2, II-R7/R8 with the +1 leaf gain) was checked numerically on every connected graph and every independent S with |S| >= 2: 237,043 instances at n = 8, and all n <= 7. checkproof.py follows the proof's decision path and asserts each inequality.",
+  "checked_up_to_n": 8
+ },
+ {
+  "statement": "Exhaustive search with the structural reductions plus the cut-neighbour deletions (irr2.cpp) finds no irreducible instance up to n = 8. This matches the proof's claim that none exists.",
+  "checked_up_to_n": 8
+ }
+]
+GAPS None in the mathematics. Things to note:
+- The proof uses L_s as the maximum number of leaves of a spanning tree, which equals n - gamma_c for n >= 3. At n = 2 (K_2) the conjecture holds under both readings (L_s = 1 or 2).
+- Not formalized in Lean. Mathlib has bridges (SimpleGraph.IsBridge) and connectivity, but no edge contraction and no max-leaf spanning tree.
+- Edge contraction is used in Case I(b) and Case II(c2) when x is in W and c is in W. A formalization could replace it by the connected-dominating-set fact gamma_c(G) <= gamma_c(G/yz) + 1.
+- F3 has a similar CDS form: a cut vertex of G - x lies in every connected dominating set of G - x.
+EXT None. Only elementary facts are used, each proved inline: L >= Delta, deleting a leaf from a tree keeps it connected, a cut vertex has degree >= 2 in every spanning tree, and contracting an edge does not increase L or alpha.
+CONF 0.96
+TRACKER Checked google-deepmind/formal-conjectures PR and issue searches for "177" and "WrittenOnTheWall 177" and found nothing about WOWII 177. The hits are unrelated: PR #6756 "feat(ErdosProblems): 177" and issue #406 are both Erdős Problem 177, and PR #177 is Lemoine's conjectures. The repo's WrittenOnTheWallII PRs found (e.g. #7361-#7373, #7320-#7338, #7287, #7303, #7310, #7248) cover other numbers (252, 253, 271, 291, 351-354, 360-365, 373, 381, 395-397, 410, 416, 420, 422, 423, 430, 433). Scratch files are in /tmp/claude-0/-home-user-math/2612733b-adce-570c-bf75-d580299d6da9/scratchpad/wf2/177-prover/:
+- checkproof.py: step-by-step proof checker.
+- t1.cpp, t3.cpp: lemma tests (Theorem A, and the min-degree form).
+- irr.cpp, irr2.cpp: irreducibility search.
+- t5.cpp: shows the naive hub lemma (slack >= max degree in S) is false, e.g. on F?zTo.
+Nothing in /home/user/math was modified.

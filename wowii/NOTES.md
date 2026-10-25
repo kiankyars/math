@@ -12,6 +12,9 @@ Status, all verified in Lean:
 - **False as stated:** WOWII 382b, 391, 399a, 401b and 412f. These fail on very small graphs
   (`K_3`, complete graphs, stars and a 5-vertex spider), which suggests transcription problems;
   see their sections.
+- **Proved informally, Lean formalization pending:** WOWII 177 (Graffiti.pc 177, stated as open
+  in DeLaViña–Waller 2008). The proof passed four independent adversarial reviews and
+  exhaustive computer checks; see its section.
 - **Resolved both ways:**
   - WOWII 367 is true when degree 2 is a strict mode and false when ties are allowed.
   - WOWII 434a is true when its undefined `M` is the set of maximum degree vertices, and false
@@ -69,6 +72,50 @@ the standard axioms. It uses the definitions of `L_s`, `b` and `λ` from
 - the internal vertices dominate;
 - a tree path between two internal vertices has only internal vertices, so it crosses each cut
   at `3` along an edge between internal vertices.
+
+## WOWII 177: proved informally (Lean formalization pending)
+
+> If `G` is a simple connected graph on at least 2 vertices, then `L_s(G) + b(G) ≥ 2α(G) + σ(G)`,
+> where `σ` is the second smallest degree.
+
+DeLaViña and Waller (EJC 15 (2008) #R33, Theorem 3) prove the version with `1` in place of `σ`
+and write that "Conjecture 177 remains open". A prover agent found a proof of the following
+stronger statement, by strong induction on `n + m`.
+
+**Theorem A.** Let `G` be connected with `n ≥ 2` and `S` independent with `|S| ≥ 2`. Then
+`L(G) ≥ |S| - α(G[V \ S]) + d_2(S)`, where `d_2(S)` is the second smallest degree among the
+vertices of `S`.
+
+WOWII 177 follows. Take `S` to be a maximum independent set and `J` a maximum independent set of
+`G - S`. Then `b ≥ α + |J|` and `d_2(S) ≥ σ`. Complete graphs are handled directly.
+
+The full proof is in `wowii/proof177.txt`.
+
+- The case `d_2 = 1` is DeLaViña–Waller's argument.
+- Otherwise the proof reduces in one of these ways:
+  - delete a non-bridge edge;
+  - contract a `W`-edge when every `S`–`W` edge is a bridge;
+  - glue the pieces at an `S`-vertex all of whose edges are bridges;
+  - pick a cut vertex `c` with a minimal component `K` (avoiding a pendant `S`-vertex), then
+    delete a vertex of `K` next to `c`, or contract a pendant edge.
+- Basic facts: `L` does not drop under deleting a non-cut vertex, and gains `1` if that vertex
+  has a neighbour that is a cut vertex of the rest; `L` does not drop under contraction.
+
+Verification:
+
+- Four independent reviewer agents each tried to refute the proof, under different lenses: the
+  step-by-step logic, the basic facts F1–F6, an exhaustive recheck, and the delicate cases. None
+  found a gap.
+- Their own code checked Theorem A on every connected graph and every independent `S` with
+  `|S| ≥ 2`:
+  - 237,043 instances at `n = 8`;
+  - 7,888,950 instances at `n = 9`.
+- The prover's step checker `experiments/w177/checkproof.py` follows the case analysis and checks
+  every inequality on all instances up to `n = 8`.
+- 177 has no activity on the formal-conjectures tracker (checked October 25, 2026).
+
+A Lean formalization would need edge contraction and cut-vertex arguments, which Mathlib does
+not provide directly. It is the next step; until it is done we list 177 as proved informally.
 
 ## WOWII 178: proved
 
